@@ -5,10 +5,8 @@ namespace Tests\Feature\Core\Usecase\Video;
 use App\Models\Video;
 use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\List\{
-    DTO\ListInputVideoDTO,
-    ListVideoUseCase
-};
+use Core\UseCase\Video\List\DTO\ListInputVideoDTO;
+use Core\UseCase\Video\List\ListVideoUseCase;
 use Tests\TestCase;
 
 class ListVideoUseCaseTest extends TestCase
@@ -40,11 +38,11 @@ class ListVideoUseCaseTest extends TestCase
             'year_launched' => $video->year_launched,
             'rating' => $video->rating,
             'duration' => $video->duration,
-            'opened' => $video->opened
+            'opened' => $video->opened,
         ]);
 
     }
-    
+
     public function testFindNotFound()
     {
         $this->expectException(NotFoundException::class);
@@ -56,7 +54,6 @@ class ListVideoUseCaseTest extends TestCase
         $response = $useCase->execute(
             new ListInputVideoDTO('fake_id')
         );
-        
-    }
 
+    }
 }

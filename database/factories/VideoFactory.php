@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use Core\Domain\Enum\Rating;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Video>
@@ -27,7 +27,7 @@ class VideoFactory extends Factory
             'year_launched' => $this->faker->year(),
             'opened' => $this->faker->boolean(),
             'rating' => $ratings[array_rand($ratings)],
-            'duration' => $this->faker->numberBetween(1, 120),        
+            'duration' => $this->faker->numberBetween(1, 120),
             'created_at' => now(),
         ];
     }

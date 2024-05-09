@@ -4,24 +4,20 @@ namespace App\Repositories\Eloquent;
 
 use App\Enums\ImageTypes;
 use App\Enums\MediaTypes;
-use Core\Domain\Entity\Video as EntityVideo;
 use App\Models\Video as Model;
 use App\Repositories\Eloquent\Traits\VideoTrait;
 use App\Repositories\Presenters\PaginationPresenter;
 use Core\Domain\Builder\Video\UpdateVideoBuilder;
 use Core\Domain\Entity\Entity;
-use Core\Domain\Enum\{
-    MediaStatus,
-    Rating
-};
+use Core\Domain\Entity\Video as EntityVideo;
+use Core\Domain\Enum\MediaStatus;
+use Core\Domain\Enum\Rating;
 use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\Domain\ValueObject\{
-    Image as ValueObjectImage,
-    Media as ValueObjectMedia,
-    Uuid
-};
+use Core\Domain\ValueObject\Image as ValueObjectImage;
+use Core\Domain\ValueObject\Media as ValueObjectMedia;
+use Core\Domain\ValueObject\Uuid;
 
 class VideoEloquentRepository implements VideoRepositoryInterface
 {
@@ -29,8 +25,8 @@ class VideoEloquentRepository implements VideoRepositoryInterface
 
     public function __construct(
         protected Model $model
-    )
-    {}
+    ) {
+    }
 
     public function insert(Entity $entity): Entity
     {
@@ -46,58 +42,64 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         ]);
 
         $this->syncRelationShips($video, $entity);
-        
+
         return $this->convertObjectToVideo($video);
 
     }
+
     public function findById(string $id): Entity
     {
-        if (!$video = $this->model->find($id)) {
+        if (! $video = $this->model->find($id)) {
             throw new NotFoundException('Video not found');
         }
 
         return $this->convertObjectToVideo($video);
     }
+
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
         $videos = $this->model
-                        ->where(function ($query) use ($filter) {
-                            if ($filter)
-                                $query->where('title', 'LIKE', "%{$filter}%");
-                            })
-                        ->orderBy('title', $order)
-                        ->get();
-                
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('title', 'LIKE', "%{$filter}%");
+                }
+            })
+            ->orderBy('title', $order)
+            ->get();
+
         return $videos->toArray();
 
     }
+
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
     {
         $paginator = $this->model
-                        ->where(function ($query) use ($filter) {
-                            if ($filter)
-                                $query->where('title', 'LIKE', "%{$filter}%");
-                            })
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('title', 'LIKE', "%{$filter}%");
+                }
+            })
                         // Quais os dados relacionados que devem ser retornados
-                        ->with([
-                            'media',
-                            'trailer',
-                            'banner',
-                            'thumb',
-                            'thumbHalf',
-                            'categories',
-                            'castMembers',
-                            'genres',
-                        ])    
-                        ->orderBy('title', $order)
-                        ->paginate($totalPage, ['*'], 'page', $page);
-                
+            ->with([
+            'media',
+            'trailer',
+            'banner',
+            'thumb',
+            'thumbHalf',
+            'categories',
+            'castMembers',
+            'genres',
+            ])
+            ->orderBy('title', $order)
+            ->paginate($totalPage, ['*'], 'page', $page);
+
         return new PaginationPresenter($paginator);
 
     }
+
     public function update(Entity $entity): Entity
     {
-        if (!$videoDb = $this->model->find($entity->id)) {
+        if (! $videoDb = $this->model->find($entity->id)) {
             throw new NotFoundException('Video not found');
         }
 
@@ -107,29 +109,31 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         ]);
 
         $this->syncRelationShips($videoDb, $entity);
-        
+
         $videoDb->refresh();
-        
+
         return $this->convertObjectToVideo($videoDb);
     }
+
     public function delete(string $id): bool
     {
-        if (!$videoDb = $this->model->find($id)) {
+        if (! $videoDb = $this->model->find($id)) {
             throw new NotFoundException('Video not found');
         }
-        
+
         return $videoDb->delete();
 
     }
+
     public function updateMedia(Entity $entity): Entity
     {
-        if (!$videoDb = $this->model->find($entity->id)) {
+        if (! $videoDb = $this->model->find($entity->id)) {
             throw new NotFoundException('Video not found');
         }
 
         $this->updateMediaVideo($entity, $videoDb);
 
-        // Substituito pela Método updateMediaTrailer da Trait VideoTrait 
+        // Substituito pela Método updateMediaTrailer da Trait VideoTrait
         // if ($trailer = $entity->trailerFile()){
         //     $action = $videoDb->trailer()->exists() ? 'update' : 'create';
         //     //var_dump($action);
@@ -151,7 +155,7 @@ class VideoEloquentRepository implements VideoRepositoryInterface
 
         $this->updateMediaTrailer($entity, $videoDb);
 
-        // Substituito pela Método updateImageBanner da Trait VideoTrait 
+        // Substituito pela Método updateImageBanner da Trait VideoTrait
         // if ($banner = $entity->bannerFile()) {
         //     $action = $videoDb->banner()->exists() ? 'update' : 'create';
         //     $videoDb->banner()->{$action}([
@@ -165,9 +169,9 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         $this->updateImageThumb($entity, $videoDb);
 
         $this->updateImageThumbHalf($entity, $videoDb);
-        
+
         $videoDb->refresh();
-        
+
         return $this->convertObjectToVideo($videoDb);
 
     }
@@ -200,7 +204,7 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             duration: $object->duration,
             createdAt: $object->created_at
         );
-        
+
         foreach ($object->categories as $category) {
             $entity->addCategoryId($category->id);
         }
@@ -278,5 +282,4 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         // return $entity;
         return $builder->getEntity();
     }
-
 }

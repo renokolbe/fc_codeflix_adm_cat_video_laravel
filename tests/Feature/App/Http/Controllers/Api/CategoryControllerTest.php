@@ -2,15 +2,14 @@
 
 namespace Tests\Feature\App\Http\Controllers\Api;
 
-use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use App\Http\Resources\CategoryResource;
-use Core\UseCase\Category\ListCategoriesUseCase;
-use Core\UseCase\Category\CreateCategoryUseCase;
-use App\Repositories\Eloquent\CategoryEloquentRepository;
 use App\Models\Category as ModelCategory;
+use App\Repositories\Eloquent\CategoryEloquentRepository;
+use Core\UseCase\Category\CreateCategoryUseCase;
 use Core\UseCase\Category\DeleteCategoryUseCase;
+use Core\UseCase\Category\ListCategoriesUseCase;
 use Core\UseCase\Category\ListCategoryUseCase;
 use Core\UseCase\Category\UpdateCategoryUseCase;
 use Illuminate\Http\JsonResponse;
@@ -22,8 +21,8 @@ use Tests\TestCase;
 
 class CategoryControllerTest extends TestCase
 {
-
     protected $repository;
+
     protected $controller;
 
     protected function setUp(): void
@@ -36,6 +35,7 @@ class CategoryControllerTest extends TestCase
 
         parent::setUp();
     }
+
     public function test_index()
     {
         $useCase = new ListCategoriesUseCase($this->repository);
@@ -56,7 +56,7 @@ class CategoryControllerTest extends TestCase
         $request = new StoreCategoryRequest();
         $request->headers->set('Content-Type', 'application/json');
         $request->setJson(new ParameterBag([
-            'name' => 'Category Name Test'
+            'name' => 'Category Name Test',
         ]));
 
         //dump($request);
@@ -73,7 +73,7 @@ class CategoryControllerTest extends TestCase
 
         $response = $this->controller->show(
             useCase: new ListCategoryUseCase($this->repository),
-            id : $category->id, 
+            id : $category->id,
         );
 
         //dump($response);
@@ -96,9 +96,9 @@ class CategoryControllerTest extends TestCase
 
         //dump($request);
         $response = $this->controller->update(
-            request: $request, 
+            request: $request,
             useCase: $useCase,
-            id : $category->id, 
+            id : $category->id,
         );
 
         //dump($response);
@@ -116,15 +116,14 @@ class CategoryControllerTest extends TestCase
         $useCase = new DeleteCategoryUseCase($this->repository);
 
         $category = ModelCategory::factory()->create();
-        
+
         $response = $this->controller->destroy(
             useCase: $useCase,
-            id : $category->id, 
+            id : $category->id,
         );
 
         //dump($response);
 
         $this->assertEquals(Response::HTTP_NO_CONTENT, $response->status());
     }
-
 }

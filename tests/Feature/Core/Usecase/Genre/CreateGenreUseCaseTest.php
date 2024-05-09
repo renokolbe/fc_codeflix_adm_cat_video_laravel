@@ -4,16 +4,12 @@ namespace Tests\Feature\Core\Usecase\Genre;
 
 use App\Models\Category as ModelCategory;
 use App\Models\Genre as ModelGenre;
-use App\Repositories\Eloquent\{
-    CategoryEloquentRepository,
-    GenreEloquentRepository
-};
+use App\Repositories\Eloquent\CategoryEloquentRepository;
+use App\Repositories\Eloquent\GenreEloquentRepository;
 use App\Repositories\Transaction\DBTransaction;
 use Core\Domain\Exception\NotFoundException;
 use Core\DTO\Genre\CreateGenre\GenreCreateInputDTO;
 use Core\UseCase\Genre\CreateGenreUseCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CreateGenreUseCaseTest extends TestCase
@@ -39,7 +35,7 @@ class CreateGenreUseCaseTest extends TestCase
         );
 
         $this->assertDatabaseHas('genres', [
-            'name' => 'test'
+            'name' => 'test',
         ]);
 
         $this->assertDatabaseCount('category_genre', 10);
@@ -92,7 +88,7 @@ class CreateGenreUseCaseTest extends TestCase
                 )
             );
             $this->assertDatabaseHas('genres', [
-                'name' => 'test'
+                'name' => 'test',
             ]);
             $this->assertDatabaseCount('category_genre', 10);
         } catch (\Throwable $th) {
@@ -124,7 +120,7 @@ class CreateGenreUseCaseTest extends TestCase
                 )
             );
             $this->assertDatabaseHas('genres', [
-                'name' => 'test'
+                'name' => 'test',
             ]);
             $this->assertDatabaseCount('category_genre', 10);
         } catch (\Throwable $th) {

@@ -3,10 +3,8 @@
 namespace Core\UseCase\Genre;
 
 use Core\Domain\Repository\GenreRepositoryInterface;
-use Core\DTO\Genre\List\{
-    ListGenresInputDTO,
-    ListGenresOutputDTO
-};
+use Core\DTO\Genre\List\ListGenresInputDTO;
+use Core\DTO\Genre\List\ListGenresOutputDTO;
 
 class ListGenresUseCase
 {

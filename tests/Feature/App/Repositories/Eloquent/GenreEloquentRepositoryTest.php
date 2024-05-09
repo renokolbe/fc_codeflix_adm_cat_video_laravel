@@ -10,19 +10,16 @@ use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\ValueObject\Uuid;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Throwable;
 
 class GenreEloquentRepositoryTest extends TestCase
 {
-
     protected $repository;
 
     protected function setUp(): void
     {
-        parent::setUp(); 
+        parent::setUp();
         $this->repository = new GenreEloquentRepository(new Model());
     }
 
@@ -57,7 +54,7 @@ class GenreEloquentRepositoryTest extends TestCase
         $this->assertDatabaseHas('genres', [
             'id' => $entity->id(),
             'name' => 'Genre Name 1',
-            'is_active' => false
+            'is_active' => false,
         ]);
     }
 
@@ -71,7 +68,7 @@ class GenreEloquentRepositoryTest extends TestCase
 
         foreach ($categories as $category) {
             $genre->addCategory($category->id);
-        };
+        }
 
         $response = $this->repository->insert($genre);
 
@@ -89,7 +86,7 @@ class GenreEloquentRepositoryTest extends TestCase
                 'genre_id' => $response->id(),
                 'category_id' => $category->id,
             ]);
-        };
+        }
 
         // $this->assertDatabaseHas('category_genre', [
         //     'genre_id' => $response->id(),
@@ -130,7 +127,7 @@ class GenreEloquentRepositoryTest extends TestCase
     public function testFindAllWithFilter()
     {
         Model::factory()->count(5)->create([
-            'name' => 'Teste'
+            'name' => 'Teste',
         ]);
 
         Model::factory()->count(10)->create();
@@ -170,10 +167,11 @@ class GenreEloquentRepositoryTest extends TestCase
         $this->assertCount(0, $response->items());
 
     }
+
     public function testPaginateWithFilter()
     {
         Model::factory()->count(20)->create([
-            'name' => 'Teste'
+            'name' => 'Teste',
         ]);
         Model::factory()->count(20)->create();
         $response = $this->repository->paginate(
@@ -236,8 +234,7 @@ class GenreEloquentRepositoryTest extends TestCase
 
         $this->assertTrue($response);
         $this->assertSoftDeleted('genres', [
-            'id' => $genreDB->id
+            'id' => $genreDB->id,
         ]);
     }
-
 }

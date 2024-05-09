@@ -9,13 +9,12 @@ use Illuminate\Support\Facades\Storage;
 class FileStorage implements FileStorageInterface
 {
     /**
-     * @param string $path
-     * @param array $_FILES[file]
+     * @param  array  $_FILES[file]
      */
     public function store(string $path, array $file): string
     {
         $contents = $this->convertFileToLaravelFile($file);
-        
+
         //return $fileLaravel->store($path);
         return Storage::put($path, $contents);
     }
@@ -34,5 +33,4 @@ class FileStorage implements FileStorageInterface
             error: $file['error'],
         );
     }
-
 }

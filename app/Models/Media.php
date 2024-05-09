@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Models\Traits\UuidTrait;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Media extends Model
 {
@@ -31,9 +31,9 @@ class Media extends Model
     // transformado em Trait - UuidTrait
     // /**
     //  * The "booted" method of the model.
-    //  * 
+    //  *
     //  * @return void
-    //  * 
+    //  *
     //  */
     // protected static function booted()
     // {

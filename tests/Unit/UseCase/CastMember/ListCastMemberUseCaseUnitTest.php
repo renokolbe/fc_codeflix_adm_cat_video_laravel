@@ -33,14 +33,14 @@ class ListCastMemberUseCaseUnitTest extends TestCase
 
         $mockRepo = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
         $mockRepo->shouldReceive('findById')
-                        ->with($uuid)
-                        ->times(1)
-                        ->andReturn($mockEntity);
+            ->with($uuid)
+            ->times(1)
+            ->andReturn($mockEntity);
 
         $mockInputDto = Mockery::mock(CastMemberInputDTO::class, [
             $uuid,
         ]);
-                        
+
         $useCase = new ListCastMemberUseCase($mockRepo);
         $responseUseCase = $useCase->execute($mockInputDto);
 
@@ -49,7 +49,7 @@ class ListCastMemberUseCaseUnitTest extends TestCase
         $this->assertEquals($castMemberName, $responseUseCase->name);
 
         $this->tearDown();
-                               
+
     }
 
     protected function tearDown(): void

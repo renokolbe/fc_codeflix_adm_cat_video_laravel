@@ -4,27 +4,19 @@ namespace Tests\Feature\App\Repositories\Eloquent;
 
 use App\Enums\ImageTypes;
 use App\Enums\MediaTypes;
-use App\Models\{
-    CastMember,
-    Category,
-    Genre,
-    Video as Model
-};
+use App\Models\CastMember;
+use App\Models\Category;
+use App\Models\Genre;
+use App\Models\Video as Model;
 use App\Repositories\Eloquent\VideoEloquentRepository;
 use Core\Domain\Entity\Video;
-use Core\Domain\Enum\{
-    MediaStatus,
-    Rating
-};
+use Core\Domain\Enum\MediaStatus;
+use Core\Domain\Enum\Rating;
 use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\PaginationInterface;
-use Core\Domain\ValueObject\{
-    Image as ValueObjectImage,
-    Media as ValueObjectMedia,
-    Uuid
-};
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Core\Domain\ValueObject\Image as ValueObjectImage;
+use Core\Domain\ValueObject\Media as ValueObjectMedia;
+use Core\Domain\ValueObject\Uuid;
 use Tests\TestCase;
 
 class VideoEloquentRepositoryTest extends TestCase
@@ -33,7 +25,7 @@ class VideoEloquentRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setUp(); 
+        parent::setUp();
         $this->repository = new VideoEloquentRepository(new Model());
     }
 
@@ -64,9 +56,10 @@ class VideoEloquentRepositoryTest extends TestCase
             'year_launched' => $entity->yearLaunched,
             'opened' => $entity->opened,
             'rating' => $entity->rating->value,
-            'duration' => $entity->duration
+            'duration' => $entity->duration,
         ]);
     }
+
     public function testInsertWithrelationships()
     {
         $categories = Category::factory()->count(2)->create();
@@ -84,15 +77,15 @@ class VideoEloquentRepositoryTest extends TestCase
 
         foreach ($categories as $category) {
             $entity->addCategoryId($category->id);
-        };
+        }
 
         foreach ($genres as $genre) {
             $entity->addGenreId($genre->id);
-        };
+        }
 
         foreach ($castMembers as $castMember) {
             $entity->addCastMemberId($castMember->id);
-        };
+        }
 
         $response = $this->repository->insert($entity);
 
@@ -109,7 +102,7 @@ class VideoEloquentRepositoryTest extends TestCase
                 'video_id' => $response->id(),
                 'category_id' => $category->id,
             ]);
-        };
+        }
 
         $this->assertEquals($categories->pluck('id')->toArray(), $response->categoriesId);
 
@@ -122,7 +115,7 @@ class VideoEloquentRepositoryTest extends TestCase
                 'video_id' => $response->id(),
                 'genre_id' => $genre->id,
             ]);
-        };
+        }
 
         $this->assertEquals($genres->pluck('id')->toArray(), $response->genresId);
 
@@ -135,7 +128,7 @@ class VideoEloquentRepositoryTest extends TestCase
                 'video_id' => $response->id(),
                 'cast_member_id' => $castMember->id,
             ]);
-        };
+        }
 
         $this->assertEquals($castMembers->pluck('id')->toArray(), $response->castMembersIds);
 
@@ -145,7 +138,7 @@ class VideoEloquentRepositoryTest extends TestCase
     {
         $dbVideo = Model::factory()->create();
         $response = $this->repository->findById($dbVideo->id);
-        
+
         $this->assertInstanceOf(Video::class, $response);
         $this->assertEquals($dbVideo->id, $response->id);
     }
@@ -167,21 +160,21 @@ class VideoEloquentRepositoryTest extends TestCase
     {
         Model::factory()->count(10)->create();
         Model::factory()->count(5)->create([
-            'title' => 'Teste'
+            'title' => 'Teste',
         ]);
-        
+
         $response = $this->repository->findAll(
             filter: 'Teste',
         );
-        
+
         $this->assertCount(5, $response);
-        
+
         $response = $this->repository->findAll(
             filter: 'XXXXX',
         );
-        
+
         $this->assertCount(0, $response);
-        
+
         $response = $this->repository->findAll();
 
         $this->assertCount(15, $response);
@@ -304,15 +297,15 @@ class VideoEloquentRepositoryTest extends TestCase
 
         foreach ($categories as $category) {
             $video->addCategoryId($category->id);
-        };
+        }
 
         foreach ($genres as $genre) {
             $video->addGenreId($genre->id);
-        };
+        }
 
         foreach ($castMembers as $castMember) {
             $video->addCastMemberId($castMember->id);
-        };
+        }
 
         $response = $this->repository->update($video);
 
@@ -354,7 +347,7 @@ class VideoEloquentRepositoryTest extends TestCase
         $dbVideo = Model::factory()->create();
         $this->repository->delete($dbVideo->id);
         $this->assertSoftDeleted('videos', [
-            'id' => $dbVideo->id
+            'id' => $dbVideo->id,
         ]);
     }
 

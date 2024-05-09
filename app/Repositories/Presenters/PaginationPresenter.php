@@ -12,8 +12,7 @@ class PaginationPresenter implements PaginationInterface
 
     public function __construct(
         protected LengthAwarePaginator $paginator,
-    )
-    {
+    ) {
         $this->items = $this->resolveItems(
             items: $this->paginator->items(),
         );
@@ -25,37 +24,37 @@ class PaginationPresenter implements PaginationInterface
     public function items(): array
     {
         return $this->items;
-    }    
+    }
 
     public function total(): int
     {
         return $this->paginator->total() ?? 0;
-    }    
+    }
 
     public function lastPage(): int
     {
         return $this->paginator->lastPage() ?? 0;
-    }    
+    }
 
     public function firstPage(): int
     {
         return $this->paginator->firstItem() ?? 0;
-    }    
+    }
 
     public function currentPage(): int
     {
         return $this->paginator->currentPage() ?? 0;
-    }    
+    }
 
     public function perPage(): int
     {
         return $this->paginator->perPage() ?? 0;
-    }    
+    }
 
     public function to(): int
     {
         return $this->paginator->lastItem() ?? 0;
-    }    
+    }
 
     public function from(): int
     {
@@ -65,7 +64,7 @@ class PaginationPresenter implements PaginationInterface
     /**
      * Converte items em um array de objetos stdClass
      *
-     * @param array $items Os items que serão convertidos.
+     * @param  array  $items  Os items que serão convertidos.
      * @return array Array com os items convertidos no formato sdtClass.
      */
     private function resolveItems(array $items): array
@@ -82,5 +81,4 @@ class PaginationPresenter implements PaginationInterface
 
         return $response;
     }
-
 }

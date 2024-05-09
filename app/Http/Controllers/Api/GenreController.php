@@ -29,10 +29,10 @@ class GenreController extends Controller
     {
         $response = $useCase->execute(
             input: new ListGenresInputDTO(
-            filter: $request->get('filter', '') ?? '',
-            order: $request->get('order', 'DESC'),
-            page: (int) $request->get('page', 1),
-            totalPage: (int) $request->get('totalPage', 15),
+                filter: $request->get('filter', '') ?? '',
+                order: $request->get('order', 'DESC'),
+                page: (int) $request->get('page', 1),
+                totalPage: (int) $request->get('totalPage', 15),
             )
         );
 
@@ -45,8 +45,8 @@ class GenreController extends Controller
                     'first_page' => $response->first_page,
                     'to' => $response->to,
                     'from' => $response->from,
-                    'per_page' => $response->per_page
-                ]
+                    'per_page' => $response->per_page,
+                ],
             ]);
     }
 

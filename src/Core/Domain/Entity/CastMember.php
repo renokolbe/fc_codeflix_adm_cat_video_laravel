@@ -17,8 +17,7 @@ class CastMember
         protected CastMemberType $type,
         protected ?Uuid $id = null,
         protected ?DateTime $createdAt = null
-    )
-    {
+    ) {
         $this->id = $this->id ?? Uuid::random();
         $this->createdAt = $this->createdAt ?? new DateTime();
         $this->validate();
@@ -26,14 +25,14 @@ class CastMember
 
     public function update(
         string $name
-    ) : void {
+    ): void {
         $this->name = $name;
 
         $this->validate();
     }
 
     private function validate()
-    {        
+    {
         DomainValidation::StrMaxLength($this->name);
         DomainValidation::StrMinLength($this->name);
     }

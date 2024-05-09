@@ -2,17 +2,13 @@
 
 namespace Tests\Feature\Core\Usecase\Video;
 
-use App\Models\{
-    CastMember,
-    Category,
-    Genre
-};
-use Core\Domain\Repository\{
-    CastMemberRepositoryInterface, 
-    CategoryRepositoryInterface,
-    GenreRepositoryInterface, 
-    VideoRepositoryInterface
-};
+use App\Models\CastMember;
+use App\Models\Category;
+use App\Models\Genre;
+use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\GenreRepositoryInterface;
+use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\UseCase\Interfaces\{
     TransactionInterface
 };
@@ -20,25 +16,24 @@ use Exception;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
-use Tests\Stubs\{
-    UploadFileStub,
-    VideoEventStub
-};
+use Tests\Stubs\UploadFileStub;
+use Tests\Stubs\VideoEventStub;
 use Tests\TestCase;
 use Throwable;
 
 abstract class BaseVideoUseCase extends TestCase
 {
-    abstract function useCase(): string;
-    abstract function inputDTO(
+    abstract public function useCase(): string;
+
+    abstract public function inputDTO(
         array $categories = [],
         array $genres = [],
         array $castMembers = [],
-        ? array $videoFile = null,
-        ? array $trailerFile = null,
-        ? array $bannerFile = null,
-        ? array $thumbFile = null,
-        ? array $thumbHalf = null,
+        ?array $videoFile = null,
+        ?array $trailerFile = null,
+        ?array $bannerFile = null,
+        ?array $thumbFile = null,
+        ?array $thumbHalf = null,
 
     ): object;
 
@@ -54,8 +49,7 @@ abstract class BaseVideoUseCase extends TestCase
         bool $withBanner = false,
         bool $withThumb = false,
         bool $withThumbHalf = false
-    )
-    {
+    ) {
         // $useCase = new ($this->useCase())(
         //     $this->app->make(VideoRepositoryInterface::class),
         //     $this->app->make(TransactionInterface::class),
@@ -127,29 +121,29 @@ abstract class BaseVideoUseCase extends TestCase
             'Test with all IDs' => [
                 'categoriesCount' => 1,
                 'genresCount' => 1,
-                'castMembersCount' => 1
+                'castMembersCount' => 1,
             ],
             'Test without categories' => [
                 'categoriesCount' => 0,
                 'genresCount' => 1,
-                'castMembersCount' => 1
+                'castMembersCount' => 1,
             ],
             'Test without categories and genres' => [
                 'categoriesCount' => 0,
                 'genresCount' => 0,
-                'castMembersCount' => 1
+                'castMembersCount' => 1,
             ],
             'Test without categories and castMembers' => [
                 'categoriesCount' => 0,
                 'genresCount' => 1,
-                'castMembersCount' => 0
+                'castMembersCount' => 0,
             ],
             'Test with all IDs and Media and Trailer' => [
                 'categoriesCount' => 1,
                 'genresCount' => 1,
                 'castMembersCount' => 1,
                 'withMediaVideo' => true,
-                'withTrailer' => true
+                'withTrailer' => true,
             ],
             'Test with all IDs and Only Images' => [
                 'categoriesCount' => 1,
@@ -159,7 +153,7 @@ abstract class BaseVideoUseCase extends TestCase
                 'withTrailer' => false,
                 'withBanner' => true,
                 'withThumb' => true,
-                'withThumbHalf' => true
+                'withThumbHalf' => true,
             ],
             'Test with all IDs and Medias andImages' => [
                 'categoriesCount' => 1,
@@ -169,7 +163,7 @@ abstract class BaseVideoUseCase extends TestCase
                 'withTrailer' => true,
                 'withBanner' => true,
                 'withThumb' => true,
-                'withThumbHalf' => true
+                'withThumbHalf' => true,
             ],
         ];
     }
@@ -185,16 +179,15 @@ abstract class BaseVideoUseCase extends TestCase
             $this->app->make(GenreRepositoryInterface::class),
             $this->app->make(CastMemberRepositoryInterface::class)
         );
-        
+
     }
 
     // Ao usar a Notação abaixo, a funcção não previsa ser criada com o sufixo Test !
     /**
      * @test
      */
-
-     public function transactionException()
-     {
+    public function transactionException()
+    {
         // Forca uma Excecao quando do Inicio do Begin Transaction para testar que não houve gravação efetiva no banco
         Event::listen(TransactionBeginning::class, function () {
             throw new Exception('begin transaction');
@@ -222,14 +215,13 @@ abstract class BaseVideoUseCase extends TestCase
             $this->assertDatabaseCount('genre_video', 0);
             $this->assertDatabaseCount('cast_member_video', 0);
         }
-     }
+    }
 
-     /**
-      * @test
-      */
-
-      public function uploadFilesException()
-      {
+    /**
+     * @test
+     */
+    public function uploadFilesException()
+    {
         // Forca uma Excecao quando do Store de Arquivos para testar que não houve gravação efetiva no banco
         Event::listen(UploadFileStub::class, function () {
             //dd('upload files');
@@ -276,11 +268,10 @@ abstract class BaseVideoUseCase extends TestCase
     /**
      * @test
      */
-
-     public function eventException()
-     {
-         // Forca uma Excecao quando do Disparo de Evento de Arquivos para testar que não houve gravação efetiva no banco
-         Event::listen(VideoEventStub::class, function () {
+    public function eventException()
+    {
+        // Forca uma Excecao quando do Disparo de Evento de Arquivos para testar que não houve gravação efetiva no banco
+        Event::listen(VideoEventStub::class, function () {
             //dd('video created event');
             throw new Exception('video created event');
         });
@@ -338,6 +329,5 @@ abstract class BaseVideoUseCase extends TestCase
             $this->assertDatabaseCount('medias_video', 0);
             $this->assertDatabaseCount('images_video', 0);
         }
-     }
-
+    }
 }

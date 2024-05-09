@@ -13,7 +13,9 @@ use Core\UseCase\Interfaces\TransactionInterface;
 class CreateGenreUseCase
 {
     protected $repository;
+
     protected $transaction;
+
     protected $categoryRepository;
 
     public function __construct(GenreRepositoryInterface $repo, TransactionInterface $trans, CategoryRepositoryInterface $categoryRepo)
@@ -35,7 +37,7 @@ class CreateGenreUseCase
                 isActive: $input->isActive,
                 categoriesId: $input->categoriesId
             );
-    
+
             $newGenre = $this->repository->insert($genre);
 
             $this->transaction->commit();
@@ -54,29 +56,28 @@ class CreateGenreUseCase
 
     public function validateCategoriesId(array $categoriesId = []): void
     {
-       $categoriesDb =  $this->categoryRepository->getIdsListIds($categoriesId);
+        $categoriesDb = $this->categoryRepository->getIdsListIds($categoriesId);
 
-       $arrayDiff = array_diff($categoriesId, $categoriesDb);
+        $arrayDiff = array_diff($categoriesId, $categoriesDb);
 
-       if (count($arrayDiff) > 0) {
+        if (count($arrayDiff) > 0) {
             $msg = sprintf(
                 '%s %s not found',
                 count($arrayDiff) === 1 ? 'Category' : 'Categories',
                 implode(', ', $arrayDiff)
             );
             throw new NotFoundException($msg);
-       }
+        }
 
         // if (count($categoriesDb) !== count($categoriesId)) {
         //     throw new NotFoundException('Categories not found');
         // }
 
-    //    foreach ($categoriesDb as $category) {
-    //        if (! in_array($category, $categoriesId)) {
-    //             throw new NotFoundException('Categories not found');
-    //        }
-    //    }
+        //    foreach ($categoriesDb as $category) {
+        //        if (! in_array($category, $categoriesId)) {
+        //             throw new NotFoundException('Categories not found');
+        //        }
+        //    }
 
     }
-
 }

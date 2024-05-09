@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Api\Auth;
 
-use Illuminate\Http\Response;
 use Tests\TestCase;
 
 class AuthApiTest extends TestCase
@@ -42,5 +41,4 @@ class AuthApiTest extends TestCase
         $this->putJson('/api/videos/fake-id')->assertStatus(401);
         $this->deleteJson('/api/videos/fake-id')->assertStatus(401);
     }
-
 }

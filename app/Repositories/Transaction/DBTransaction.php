@@ -21,5 +21,4 @@ class DBTransaction implements TransactionInterface
     {
         DB::rollBack();
     }
-
 }

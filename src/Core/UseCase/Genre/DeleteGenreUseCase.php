@@ -3,8 +3,8 @@
 namespace Core\UseCase\Genre;
 
 use Core\Domain\Repository\GenreRepositoryInterface;
-use Core\DTO\Genre\GenreInputDTO;
 use Core\DTO\Genre\DeleteGenre\GenreDeleteOutputDTO;
+use Core\DTO\Genre\GenreInputDTO;
 
 class DeleteGenreUseCase
 {

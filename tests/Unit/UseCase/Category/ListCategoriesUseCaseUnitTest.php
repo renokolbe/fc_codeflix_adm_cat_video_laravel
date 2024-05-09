@@ -14,7 +14,6 @@ use Tests\Unit\UseCase\UseCaseTrait;
 
 class ListCategoriesUseCaseUnitTest extends TestCase
 {
-
     use UseCaseTrait;
 
     public function testListCategoriesEmpty()
@@ -25,7 +24,7 @@ class ListCategoriesUseCaseUnitTest extends TestCase
         $this->mockRepo->shouldReceive('paginate')->times(1)->andReturn($mockPagination);
 
         $this->mockInputDto = Mockery::mock(ListCategoriesInputDTO::class, ['filter', 'DESC']);
-                
+
         $useCase = new ListCategoriesUseCase($this->mockRepo);
         $responseUseCase = $useCase->execute($this->mockInputDto);
 
@@ -35,17 +34,17 @@ class ListCategoriesUseCaseUnitTest extends TestCase
         /**
          * Spies
          */
-/*
-// Nao há necessidade do SPIES se usar no mock o parametro times() para verificar a quatidade de chamadas da funcionalidade
+        /*
+        // Nao há necessidade do SPIES se usar no mock o parametro times() para verificar a quatidade de chamadas da funcionalidade
 
-        $this->spy = Mockery::spy(stdClass::class, CategoryRepositoryInterface::class);
-        $this->spy->shouldReceive('paginate')->andReturn($mockPagination);
-                 
-        $useCaseSpy = new ListCategoriesUseCase($this->spy);
-        $useCaseSpy->execute($this->mockInputDto);
- 
-        $this->spy->shouldHaveReceived('paginate');
-*/
+                $this->spy = Mockery::spy(stdClass::class, CategoryRepositoryInterface::class);
+                $this->spy->shouldReceive('paginate')->andReturn($mockPagination);
+
+                $useCaseSpy = new ListCategoriesUseCase($this->spy);
+                $useCaseSpy->execute($this->mockInputDto);
+
+                $this->spy->shouldHaveReceived('paginate');
+        */
         $this->tearDown();
     }
 
@@ -69,7 +68,7 @@ class ListCategoriesUseCaseUnitTest extends TestCase
         $this->mockRepo->shouldReceive('paginate')->times(1)->andReturn($mockPagination);
 
         $this->mockInputDto = Mockery::mock(ListCategoriesInputDTO::class, ['filter', 'DESC']);
-                
+
         $useCase = new ListCategoriesUseCase($this->mockRepo);
         $responseUseCase = $useCase->execute($this->mockInputDto);
 
@@ -79,23 +78,24 @@ class ListCategoriesUseCaseUnitTest extends TestCase
 
         $this->tearDown();
     }
-/*
-    protected function mockPagination(array $items = [], )
-    {
-        $this->mockPagination = Mockery::mock(stdClass::class, PaginationInterface::class);
-        $this->mockPagination->shouldReceive('items')->andReturn($items);
-        $this->mockPagination->shouldReceive('total')->andReturn(0);
-        $this->mockPagination->shouldReceive('lastPage')->andReturn(0);
-        $this->mockPagination->shouldReceive('firstPage')->andReturn(0);
-        $this->mockPagination->shouldReceive('currentPage')->andReturn(0);
-        $this->mockPagination->shouldReceive('perPage')->andReturn(0);
-        $this->mockPagination->shouldReceive('to')->andReturn(0);
-        $this->mockPagination->shouldReceive('from')->andReturn(0);
 
-        return $this->mockPagination;
+    /*
+        protected function mockPagination(array $items = [], )
+        {
+            $this->mockPagination = Mockery::mock(stdClass::class, PaginationInterface::class);
+            $this->mockPagination->shouldReceive('items')->andReturn($items);
+            $this->mockPagination->shouldReceive('total')->andReturn(0);
+            $this->mockPagination->shouldReceive('lastPage')->andReturn(0);
+            $this->mockPagination->shouldReceive('firstPage')->andReturn(0);
+            $this->mockPagination->shouldReceive('currentPage')->andReturn(0);
+            $this->mockPagination->shouldReceive('perPage')->andReturn(0);
+            $this->mockPagination->shouldReceive('to')->andReturn(0);
+            $this->mockPagination->shouldReceive('from')->andReturn(0);
 
-    }
-*/
+            return $this->mockPagination;
+
+        }
+    */
     protected function tearDown(): void
     {
         Mockery::close();

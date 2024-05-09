@@ -3,7 +3,6 @@
 namespace Tests\Unit\UseCase\CastMember;
 
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\Domain\Repository\PaginationInterface;
 use Core\DTO\CastMember\List\ListCastMembersInputDTO;
 use Core\DTO\CastMember\List\ListCastMembersOutputDTO;
 use Core\UseCase\CastMember\ListCastMembersUseCase;
@@ -25,7 +24,7 @@ class ListCastMembersUseCaseUnitTest extends TestCase
         $mockRepo->shouldReceive('paginate')->times(1)->andReturn($mockPagination);
 
         $mockInputDto = Mockery::mock(ListCastMembersInputDTO::class, ['filter', 'DESC']);
-                
+
         $useCase = new ListCastMembersUseCase($mockRepo);
         $responseUseCase = $useCase->execute($mockInputDto);
 
@@ -52,7 +51,7 @@ class ListCastMembersUseCaseUnitTest extends TestCase
 
         $mockRepo = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
         $mockRepo->shouldReceive('paginate')->times(1)->andReturn($mockPagination);
-                
+
         $useCase = new ListCastMembersUseCase($mockRepo);
 
         $mockInputDto = Mockery::mock(ListCastMembersInputDTO::class, ['filter', 'DESC', 1, 15]);
@@ -66,6 +65,7 @@ class ListCastMembersUseCaseUnitTest extends TestCase
 
         $this->tearDown();
     }
+
     protected function tearDown(): void
     {
         Mockery::close();

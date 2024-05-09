@@ -13,14 +13,14 @@ class Video extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-            'id',
-            'title',
-            'description',
-            'year_launched',
-            'opened',
-            'duration',
-            'rating',
-            'created_at',
+        'id',
+        'title',
+        'description',
+        'year_launched',
+        'opened',
+        'duration',
+        'rating',
+        'created_at',
     ];
 
     public $incrementing = false;
@@ -49,30 +49,30 @@ class Video extends Model
     public function media()
     {
         return $this->hasOne(Media::class)
-                    ->where('type', (string) MediaTypes::VIDEO->value);
+            ->where('type', (string) MediaTypes::VIDEO->value);
     }
 
     public function trailer()
     {
         return $this->hasOne(Media::class)
-                    ->where('type', (string) MediaTypes::TRAILER->value);
+            ->where('type', (string) MediaTypes::TRAILER->value);
     }
 
     public function banner()
     {
         return $this->hasOne(ImageVideo::class)
-                    ->where('type', (string) ImageTypes::BANNER->value);
+            ->where('type', (string) ImageTypes::BANNER->value);
     }
 
     public function thumb()
     {
         return $this->hasOne(ImageVideo::class)
-                    ->where('type', (string) ImageTypes::THUMB->value);
+            ->where('type', (string) ImageTypes::THUMB->value);
     }
 
     public function thumbHalf()
     {
         return $this->hasOne(ImageVideo::class)
-                    ->where('type', (string) ImageTypes::THUMB_HALF->value);
+            ->where('type', (string) ImageTypes::THUMB_HALF->value);
     }
 }

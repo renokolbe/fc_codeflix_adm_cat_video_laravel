@@ -8,7 +8,6 @@ use Core\Domain\ValueObject\Uuid;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid as RamseyUuid;
-use Throwable;
 
 class GenreUnitTest extends TestCase
 {
@@ -42,7 +41,8 @@ class GenreUnitTest extends TestCase
 
     }
 
-    public function testActive(){
+    public function testActive()
+    {
         $genre = new EntityGenre(
             name: 'New Genre',
             isActive: false
@@ -55,7 +55,8 @@ class GenreUnitTest extends TestCase
 
     }
 
-    public function testDeactivate(){
+    public function testDeactivate()
+    {
         $genre = new EntityGenre(
             name: 'New Genre'
         );
@@ -67,7 +68,8 @@ class GenreUnitTest extends TestCase
 
     }
 
-    public function testUpdate(){
+    public function testUpdate()
+    {
 
         $genre = new EntityGenre(
             name: 'New Genre',
@@ -90,7 +92,7 @@ class GenreUnitTest extends TestCase
             name: 'Ne',
         );
     }
-    
+
     public function testUpdateException()
     {
         $this->expectException(EntityValidationException::class);

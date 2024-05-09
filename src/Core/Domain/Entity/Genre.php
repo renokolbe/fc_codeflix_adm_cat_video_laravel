@@ -17,23 +17,25 @@ class Genre
         protected bool $isActive = true,
         protected array $categoriesId = [],
         protected ?DateTime $createdAt = null
-    ){
+    ) {
         $this->id = $this->id ?? Uuid::random();
         $this->createdAt = $this->createdAt ?? new DateTime();
         $this->validate();
     }
 
-    public function activate() : void {
+    public function activate(): void
+    {
         $this->isActive = true;
     }
 
-    public function deactivate() : void {
+    public function deactivate(): void
+    {
         $this->isActive = false;
     }
 
     public function update(
         string $name
-    ) : void {
+    ): void {
         $this->name = $name;
 
         $this->validate();
@@ -53,9 +55,8 @@ class Genre
     }
 
     private function validate()
-    {        
+    {
         DomainValidation::StrMaxLength($this->name);
         DomainValidation::StrMinLength($this->name);
     }
-        
 }

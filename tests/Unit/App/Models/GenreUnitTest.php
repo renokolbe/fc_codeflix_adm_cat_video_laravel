@@ -3,8 +3,8 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\Genre;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GenreUnitTest extends ModelTestCase
@@ -40,5 +40,4 @@ class GenreUnitTest extends ModelTestCase
             'deleted_at' => 'datetime',  // Default do Laravel
         ];
     }
-
 }

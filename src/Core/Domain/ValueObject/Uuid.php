@@ -2,7 +2,6 @@
 
 namespace Core\Domain\ValueObject;
 
-use Exception;
 use InvalidArgumentException;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 
@@ -10,11 +9,12 @@ class Uuid
 {
     public function __construct(
         protected string $value
-    ){
+    ) {
         $this->ensureIsValid($value);
     }
 
-    public static function random(): self{
+    public static function random(): self
+    {
         return new self(RamseyUuid::uuid4()->toString());
     }
 
@@ -23,11 +23,11 @@ class Uuid
         return $this->value;
     }
 
-    private function ensureIsValid(string $id){
+    private function ensureIsValid(string $id)
+    {
 
         if (! RamseyUuid::isValid($id)) {
             throw new InvalidArgumentException(sprintf('<%s> does not allow the value <%s>', static::class, $id));
         }
     }
-
 }

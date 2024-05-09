@@ -21,12 +21,12 @@ class DeleteCastMemberUseCaseUnitTest extends TestCase
 
         // Expect
         $mockRepo->shouldReceive('delete')
-                        ->once()
-                        ->with($id)
-                        ->andReturn(true);
+            ->once()
+            ->with($id)
+            ->andReturn(true);
 
         $mockInputDto = Mockery::mock(CastMemberInputDTO::class, [$id]);
-                        
+
         $useCase = new DeleteCastMemberUseCase($mockRepo);
 
         // action
@@ -38,19 +38,19 @@ class DeleteCastMemberUseCaseUnitTest extends TestCase
 
         $this->tearDown();
     }
-    
+
     public function testeDeleteNotFound()
     {
         $id = (string) RamseyUuid::uuid4()->toString();
 
         $mockRepo = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
         $mockRepo->shouldReceive('delete')
-                        ->times(1)
-                        ->with($id)
-                        ->andReturn(false);
+            ->times(1)
+            ->with($id)
+            ->andReturn(false);
 
         $mockInputDto = Mockery::mock(CastMemberInputDTO::class, [$id]);
-                        
+
         $useCase = new DeleteCastMemberUseCase($mockRepo);
         $responseUseCase = $useCase->execute($mockInputDto);
 

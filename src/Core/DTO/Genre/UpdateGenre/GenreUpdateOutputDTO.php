@@ -9,6 +9,6 @@ class GenreUpdateOutputDTO
         public string $name,
         public bool $is_active = true,
         public string $created_at = '',
-    )
-    {}    
+    ) {
+    }
 }

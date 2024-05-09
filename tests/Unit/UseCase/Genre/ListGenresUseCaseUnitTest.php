@@ -4,10 +4,8 @@ namespace Tests\Unit\UseCase\Genre;
 
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\PaginationInterface;
-use Core\DTO\Genre\List\{
-    ListGenresInputDTO,
-    ListGenresOutputDTO
-};
+use Core\DTO\Genre\List\ListGenresInputDTO;
+use Core\DTO\Genre\List\ListGenresOutputDTO;
 use Core\UseCase\Genre\ListGenresUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -17,6 +15,7 @@ use Tests\Unit\UseCase\UseCaseTrait;
 class ListGenresUseCaseUnitTest extends TestCase
 {
     use UseCaseTrait;
+
     public function test_usecase()
     {
         $mockPagination = $this->mockPagination();
@@ -25,7 +24,7 @@ class ListGenresUseCaseUnitTest extends TestCase
         $mockRepository->shouldReceive('paginate')->times(1)->andReturn($mockPagination);
 
         $mockDTOInput = Mockery::mock(ListGenresInputDTO::class, [
-            'test', 'ASC', 1, 15
+            'test', 'ASC', 1, 15,
         ]);
 
         $useCase = new ListGenresUseCase($mockRepository);
@@ -37,7 +36,7 @@ class ListGenresUseCaseUnitTest extends TestCase
 
         /**
          * Spies
-        */
+         */
 
         // arrange
         $mockSpy = Mockery::spy(stdClass::class, GenreRepositoryInterface::class);
@@ -53,21 +52,21 @@ class ListGenresUseCaseUnitTest extends TestCase
             'test', 'ASC', 1, 15
         );
     }
-/*
-    protected function mockPagination(array $items = [], )
-    {
-        $this->mockPagination = Mockery::mock(stdClass::class, PaginationInterface::class);
-        $this->mockPagination->shouldReceive('items')->andReturn($items);
-        $this->mockPagination->shouldReceive('total')->andReturn(0);
-        $this->mockPagination->shouldReceive('lastPage')->andReturn(0);
-        $this->mockPagination->shouldReceive('firstPage')->andReturn(0);
-        $this->mockPagination->shouldReceive('currentPage')->andReturn(0);
-        $this->mockPagination->shouldReceive('perPage')->andReturn(0);
-        $this->mockPagination->shouldReceive('to')->andReturn(0);
-        $this->mockPagination->shouldReceive('from')->andReturn(0);
+    /*
+        protected function mockPagination(array $items = [], )
+        {
+            $this->mockPagination = Mockery::mock(stdClass::class, PaginationInterface::class);
+            $this->mockPagination->shouldReceive('items')->andReturn($items);
+            $this->mockPagination->shouldReceive('total')->andReturn(0);
+            $this->mockPagination->shouldReceive('lastPage')->andReturn(0);
+            $this->mockPagination->shouldReceive('firstPage')->andReturn(0);
+            $this->mockPagination->shouldReceive('currentPage')->andReturn(0);
+            $this->mockPagination->shouldReceive('perPage')->andReturn(0);
+            $this->mockPagination->shouldReceive('to')->andReturn(0);
+            $this->mockPagination->shouldReceive('from')->andReturn(0);
 
-        return $this->mockPagination;
+            return $this->mockPagination;
 
-    }
-*/
+        }
+    */
 }

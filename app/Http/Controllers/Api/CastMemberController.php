@@ -5,18 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCastMemberRequest;
 use App\Http\Requests\UpdateCastMemberRequest;
+use App\Http\Resources\CastMemberResource;
 use Core\DTO\CastMember\CastMemberInputDTO;
 use Core\DTO\CastMember\Create\CastMemberCreateInputDTO;
 use Core\DTO\CastMember\List\ListCastMembersInputDTO;
 use Core\DTO\CastMember\Update\CastMemberUpdateInputDTO;
-use Core\UseCase\CastMember\{
-    CreateCastMemberUseCase,
-    DeleteCastMemberUseCase,
-    ListCastMembersUseCase,
-    ListCastMemberUseCase,
-    UpdateCastMemberUseCase
-};
-use App\Http\Resources\CastMemberResource;
+use Core\UseCase\CastMember\CreateCastMemberUseCase;
+use Core\UseCase\CastMember\DeleteCastMemberUseCase;
+use Core\UseCase\CastMember\ListCastMembersUseCase;
+use Core\UseCase\CastMember\ListCastMemberUseCase;
+use Core\UseCase\CastMember\UpdateCastMemberUseCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -30,7 +28,7 @@ class CastMemberController extends Controller
             page: (int) $request->get('page', 1),
             totalPage: (int) $request->get('totalPage', 15),
         ));
-        
+
         return CastMemberResource::collection(collect($response->items))
             ->additional([
                 'meta' => [
@@ -40,8 +38,8 @@ class CastMemberController extends Controller
                     'first_page' => $response->first_page,
                     'to' => $response->to,
                     'from' => $response->from,
-                    'per_page' => $response->per_page
-                ]
+                    'per_page' => $response->per_page,
+                ],
             ]);
     }
 
@@ -87,5 +85,4 @@ class CastMemberController extends Controller
 
         return response()->noContent();
     }
-
 }

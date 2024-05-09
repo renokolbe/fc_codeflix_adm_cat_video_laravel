@@ -6,11 +6,9 @@ use Core\Domain\Entity\Video;
 use Core\Domain\Enum\MediaStatus;
 use Core\Domain\Enum\Rating;
 use Core\Domain\Notification\NotificationException;
-use Core\Domain\ValueObject\{
-    Image,
-    Media,
-    Uuid
-};
+use Core\Domain\ValueObject\Image;
+use Core\Domain\ValueObject\Media;
+use Core\Domain\ValueObject\Uuid;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid as RamseyUuid;
@@ -81,7 +79,7 @@ class VideoUnitTest extends TestCase
         $video->addCategoryId(
             categoryId: $categoryId
         );
-        
+
         $this->assertCount(1, $video->categoriesId);
 
     }
@@ -110,7 +108,7 @@ class VideoUnitTest extends TestCase
         $video->addCategoryId(
             categoryId: $categoryId
         );
-        
+
         $this->assertCount(2, $video->categoriesId);
 
         $video->removeCategoryId(
@@ -140,7 +138,7 @@ class VideoUnitTest extends TestCase
         $video->addGenreId(
             genreId: $genreId
         );
-        
+
         $this->assertCount(1, $video->genresId);
 
     }
@@ -169,7 +167,7 @@ class VideoUnitTest extends TestCase
         $video->addGenreId(
             genreId: $genreId
         );
-        
+
         $this->assertCount(2, $video->genresId);
 
         $video->removeGenreId(
@@ -199,7 +197,7 @@ class VideoUnitTest extends TestCase
         $video->addCastMemberId(
             castMemberId: $castMemberId
         );
-        
+
         $this->assertCount(1, $video->castMembersIds);
 
     }
@@ -228,7 +226,7 @@ class VideoUnitTest extends TestCase
         $video->addCastMemberId(
             castMemberId: $castMemberId
         );
-        
+
         $this->assertCount(2, $video->castMembersIds);
 
         $video->removeCastMemberId(
@@ -256,7 +254,7 @@ class VideoUnitTest extends TestCase
         //dump($video->thumbFile()->path());
 
         $this->assertNotNull($video->thumbFile());
-        $this->assertInstanceOf(Image::class,$video->thumbFile());
+        $this->assertInstanceOf(Image::class, $video->thumbFile());
         $this->assertEquals('caminho/para/imagem.png', $video->thumbFile()->path());
     }
 
@@ -295,7 +293,7 @@ class VideoUnitTest extends TestCase
         //dump($video->thumbFile()->path());
 
         $this->assertNotNull($video->thumbHalf());
-        $this->assertInstanceOf(Image::class,$video->thumbHalf());
+        $this->assertInstanceOf(Image::class, $video->thumbHalf());
         $this->assertEquals('caminho/para/imagem.png', $video->thumbHalf()->path());
     }
 
@@ -334,7 +332,7 @@ class VideoUnitTest extends TestCase
         //dump($video->thumbFile()->path());
 
         $this->assertNotNull($video->bannerFile());
-        $this->assertInstanceOf(Image::class,$video->bannerFile());
+        $this->assertInstanceOf(Image::class, $video->bannerFile());
         $this->assertEquals('caminho/para/banner.png', $video->bannerFile()->path());
     }
 
@@ -380,7 +378,7 @@ class VideoUnitTest extends TestCase
         $trailerFile = new Media(
             filePath: 'caminho/para/trailer.raw',
             mediaStatus: MediaStatus::PENDING,
-            encodedPath: 'caminho/encoded/trailer.mp4', 
+            encodedPath: 'caminho/encoded/trailer.mp4',
         );
 
         $video = new Video(
@@ -397,7 +395,7 @@ class VideoUnitTest extends TestCase
         //dump($video->trailerFile());
 
         $this->assertNotNull($video->trailerFile());
-        $this->assertInstanceOf(Media::class,$video->trailerFile());
+        $this->assertInstanceOf(Media::class, $video->trailerFile());
         $this->assertEquals('caminho/para/trailer.raw', $video->trailerFile()->filePath);
         $this->assertEquals(MediaStatus::PENDING, $video->trailerFile()->mediaStatus);
         $this->assertEquals('caminho/encoded/trailer.mp4', $video->trailerFile()->encodedPath);
@@ -427,7 +425,7 @@ class VideoUnitTest extends TestCase
         $videoFile = new Media(
             filePath: 'caminho/para/videofile.raw',
             mediaStatus: MediaStatus::COMPLETE,
-            encodedPath: 'caminho/encoded/videofile.mp4', 
+            encodedPath: 'caminho/encoded/videofile.mp4',
         );
 
         $video = new Video(
@@ -444,7 +442,7 @@ class VideoUnitTest extends TestCase
         //dump($video->trailerFile());
 
         $this->assertNotNull($video->videoFile());
-        $this->assertInstanceOf(Media::class,$video->videoFile());
+        $this->assertInstanceOf(Media::class, $video->videoFile());
         $this->assertEquals('caminho/para/videofile.raw', $video->videoFile()->filePath);
         $this->assertEquals(MediaStatus::COMPLETE, $video->videoFile()->mediaStatus);
         $this->assertEquals('caminho/encoded/videofile.mp4', $video->videoFile()->encodedPath);
@@ -472,7 +470,7 @@ class VideoUnitTest extends TestCase
         //dump($video->trailerFile());
 
         $this->assertNotNull($video->videoFile());
-        $this->assertInstanceOf(Media::class,$video->videoFile());
+        $this->assertInstanceOf(Media::class, $video->videoFile());
         $this->assertEquals('caminho/para/videofile.raw', $video->videoFile()->filePath);
         $this->assertEquals(MediaStatus::PROCESSING, $video->videoFile()->mediaStatus);
         $this->assertEquals('', $video->videoFile()->encodedPath);
@@ -493,5 +491,4 @@ class VideoUnitTest extends TestCase
         );
 
     }
-
 }

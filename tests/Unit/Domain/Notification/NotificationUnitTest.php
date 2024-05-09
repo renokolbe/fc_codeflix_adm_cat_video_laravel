@@ -5,7 +5,6 @@ namespace Tests\Unit\Domain\Notification;
 use Core\Domain\Notification\Notification;
 use PHPUnit\Framework\TestCase;
 
-
 class NotificationUnitTest extends TestCase
 {
     public function testGetErrors()
@@ -24,7 +23,7 @@ class NotificationUnitTest extends TestCase
 
         $notification->addError([
             'context' => 'video',
-            'message' => 'video title is required'
+            'message' => 'video title is required',
         ]);
 
         $this->assertTrue($notification->hasErrors());
@@ -35,14 +34,14 @@ class NotificationUnitTest extends TestCase
         $notification = new Notification();
         $notification->addError([
             'context' => 'video',
-            'message' => 'video title is required'
+            'message' => 'video title is required',
         ]);
 
         $this->assertEquals('video: video title is required,', $notification->messages());
 
         $notification->addError([
             'context' => 'category',
-            'message' => 'name is required'
+            'message' => 'name is required',
         ]);
 
         $this->assertEquals('video: video title is required,category: name is required,', $notification->messages());
@@ -54,14 +53,15 @@ class NotificationUnitTest extends TestCase
         $notification = new Notification();
         $notification->addError([
             'context' => 'video',
-            'message' => 'video title is required'
+            'message' => 'video title is required',
         ]);
 
         $notification->addError([
             'context' => 'category',
-            'message' => 'name is required'
+            'message' => 'name is required',
         ]);
 
         $this->assertEquals('video: video title is required,', $notification->messages('video'));
 
-    }}
+    }
+}

@@ -14,7 +14,7 @@ class CategoryControllerUnitTest extends TestCase
     public function test_index()
     {
         $mockDTOOutput = Mockery::mock(ListCategoriesOutputDTO::class, [
-            [], 1, 1, 1, 1, 1, 1, 1
+            [], 1, 1, 1, 1, 1, 1, 1,
         ]);
 
         $mockRequest = Mockery::Mock(Request::class);
@@ -34,14 +34,13 @@ class CategoryControllerUnitTest extends TestCase
         /**
          * Spies
          */
+        $mockUseCaseSpy = Mockery::spy(ListCategoriesUseCase::class);
+        $mockUseCaseSpy->shouldReceive('execute')->andReturn($mockDTOOutput);
 
-         $mockUseCaseSpy = Mockery::spy(ListCategoriesUseCase::class);
-         $mockUseCaseSpy->shouldReceive('execute')->andReturn($mockDTOOutput);
+        $response = $controller->index($mockRequest, $mockUseCaseSpy);
 
-         $response = $controller->index($mockRequest, $mockUseCaseSpy);
+        $mockUseCaseSpy->shouldHaveReceived('execute');
 
-         $mockUseCaseSpy->shouldHaveReceived('execute');
- 
-         Mockery::close();
+        Mockery::close();
     }
 }

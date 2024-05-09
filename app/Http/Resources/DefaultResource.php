@@ -17,15 +17,15 @@ class DefaultResource extends JsonResource
         //return parent::toArray($request);
         //return $this->resource;
         return collect($this->resource)
-                    ->mapWithKeys(function ($value, $key) {
+            ->mapWithKeys(function ($value, $key) {
 
-                        // Converte o nome da Chave do Padrão camelCase para snake_case
-                        $key = trim(strtolower(preg_replace('/[A-Z]/', '_$0', $key))); 
+                // Converte o nome da Chave do Padrão camelCase para snake_case
+                $key = trim(strtolower(preg_replace('/[A-Z]/', '_$0', $key)));
 
-                        return [
-                            $key => $value,
-                        ];
-                    });
+                return [
+                    $key => $value,
+                ];
+            });
 
     }
 }

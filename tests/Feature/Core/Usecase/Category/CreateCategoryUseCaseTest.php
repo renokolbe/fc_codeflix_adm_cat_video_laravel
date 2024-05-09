@@ -11,7 +11,6 @@ use Tests\TestCase;
 
 class CreateCategoryUseCaseTest extends TestCase
 {
-    
     public function test_create()
     {
         $model = new ModelCategory();
@@ -35,7 +34,7 @@ class CreateCategoryUseCaseTest extends TestCase
             'id' => $responseUseCase->id,
             'name' => $responseUseCase->name,
             'description' => $responseUseCase->description,
-            'is_active' => $responseUseCase->is_active
+            'is_active' => $responseUseCase->is_active,
         ]);
     }
 }

@@ -2,9 +2,7 @@
 
 namespace Tests\Unit\UseCase\Video;
 
-
 use Core\Domain\Entity\Video as EntityVideo;
-use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Enum\Rating;
 use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\VideoRepositoryInterface;
@@ -28,12 +26,12 @@ class ChangeEncodedPathVideoUnitTest extends TestCase
         $mockRepository = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
 
         $mockRepository->shouldReceive('findById')
-                        ->with($input->id)
-                        ->times(1)
-                        ->andReturn($this->getEntity());
-        
+            ->with($input->id)
+            ->times(1)
+            ->andReturn($this->getEntity());
+
         $mockRepository->shouldReceive('updateMedia')
-                        ->times(1);
+            ->times(1);
 
         $useCase = new ChangeEncodedPathVideo(
             repository: $mockRepository
@@ -57,12 +55,12 @@ class ChangeEncodedPathVideoUnitTest extends TestCase
         $mockRepository = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
 
         $mockRepository->shouldReceive('findById')
-                        ->with($input->id)
-                        ->times(1)
-                        ->andThrow(new NotFoundException('Video not found'));
-        
+            ->with($input->id)
+            ->times(1)
+            ->andThrow(new NotFoundException('Video not found'));
+
         $mockRepository->shouldReceive('updateMedia')
-                        ->times(0);
+            ->times(0);
 
         $useCase = new ChangeEncodedPathVideo(
             repository: $mockRepository

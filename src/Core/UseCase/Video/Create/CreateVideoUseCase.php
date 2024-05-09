@@ -2,21 +2,17 @@
 
 namespace Core\UseCase\Video\Create;
 
-use Core\Domain\Builder\Video\{
-    Builder,
-    CreateVideoBuilder
-};
+use Core\Domain\Builder\Video\Builder;
+use Core\Domain\Builder\Video\CreateVideoBuilder;
 use Core\UseCase\Video\BaseVideoUseCase;
-use Core\UseCase\Video\Create\DTO\{
-    CreateInputVideoDTO,
-    CreateOutputVideoDTO
-};
+use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
+use Core\UseCase\Video\Create\DTO\CreateOutputVideoDTO;
 use Throwable;
 
 class CreateVideoUseCase extends BaseVideoUseCase
 {
     //protected EntityVideo $entity;
-    
+
     // Movido para a BaseClass
     /*
     protected BuilderVideo $builder;
@@ -160,14 +156,14 @@ class CreateVideoUseCase extends BaseVideoUseCase
 
     }
     */
-    
+
     // Movido para a BaseClass
     /*
     private function storeFile(string $path, ?array $media = null): null|string
     {
         if ($media){
             return $this->storage->store(
-                path: $path, 
+                path: $path,
                 file: $media
             );
         }
@@ -241,7 +237,7 @@ class CreateVideoUseCase extends BaseVideoUseCase
         $idsDb =  $repository->getIdsListIds($ids);
 
         $arrayDiff = array_diff($ids, $idsDb);
- 
+
         if (count($arrayDiff) > 0) {
              $msg = sprintf(
                  '%s %s not found',
@@ -250,7 +246,7 @@ class CreateVideoUseCase extends BaseVideoUseCase
              );
              throw new NotFoundException($msg);
         }
- 
+
     }
     */
 
@@ -258,6 +254,7 @@ class CreateVideoUseCase extends BaseVideoUseCase
     private function output(): CreateOutputVideoDTO
     {
         $video = $this->builder->getEntity();
+
         return new CreateOutputVideoDTO(
             id: $video->id(),
             title: $video->title,
@@ -278,5 +275,4 @@ class CreateVideoUseCase extends BaseVideoUseCase
         );
 
     }
-
 }

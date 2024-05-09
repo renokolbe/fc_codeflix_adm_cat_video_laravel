@@ -9,23 +9,22 @@ use Core\UseCase\Video\Update\UpdateVideoUseCase;
 
 class UpdateVideoUseCaseTest extends BaseVideoUseCase
 {
-    function useCase(): string
+    public function useCase(): string
     {
         return UpdateVideoUseCase::class;
     }
-    
-    function inputDTO(
+
+    public function inputDTO(
         array $categories = [],
         array $genres = [],
         array $castMembers = [],
-        ? array $videoFile = null,
-        ? array $trailerFile = null,
-        ? array $bannerFile = null,
-        ? array $thumbFile = null,
-        ? array $thumbHalf = null,
+        ?array $videoFile = null,
+        ?array $trailerFile = null,
+        ?array $bannerFile = null,
+        ?array $thumbFile = null,
+        ?array $thumbHalf = null,
 
-    ): object
-    {
+    ): object {
         $video = Video::factory()->create();
 
         return new UpdateInputVideoDTO(
@@ -42,5 +41,4 @@ class UpdateVideoUseCaseTest extends BaseVideoUseCase
             thumbHalf: $thumbHalf
         );
     }
-
 }

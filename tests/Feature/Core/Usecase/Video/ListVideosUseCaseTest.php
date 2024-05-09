@@ -5,11 +5,8 @@ namespace Tests\Feature\Core\Usecase\Video;
 use App\Models\Video;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\Paginate\{
-    ListVideosUseCase,
-    DTO\PaginateInputVideoDTO,
-//    DTO\PaginateOutputVideoDTO
-};
+use Core\UseCase\Video\Paginate\DTO\PaginateInputVideoDTO;
+use Core\UseCase\Video\Paginate\ListVideosUseCase; //    DTO\PaginateOutputVideoDTO
 use Tests\TestCase;
 
 class ListVideosUseCaseTest extends TestCase
@@ -19,7 +16,7 @@ class ListVideosUseCaseTest extends TestCase
         $videosDb = Video::factory()->count(100)->create();
 
         $useCase = new ListVideosUseCase(
-            $this->app->make(VideoRepositoryInterface::class)            
+            $this->app->make(VideoRepositoryInterface::class)
         );
 
         $response = $useCase->execute(new PaginateInputVideoDTO());
@@ -40,7 +37,7 @@ class ListVideosUseCaseTest extends TestCase
     {
         $videosDb = Video::factory()->count($total)->create();
         $useCase = new ListVideosUseCase(
-            $this->app->make(VideoRepositoryInterface::class)            
+            $this->app->make(VideoRepositoryInterface::class)
         );
 
         $input = new PaginateInputVideoDTO(
@@ -68,7 +65,7 @@ class ListVideosUseCaseTest extends TestCase
             'Page 2' => [
                 'page' => 2,
                 'totalPerPage' => 10,
-                'total' => 100
+                'total' => 100,
             ],
         ];
     }
@@ -76,7 +73,7 @@ class ListVideosUseCaseTest extends TestCase
     public function testPaginateEmpty()
     {
         $useCase = new ListVideosUseCase(
-            $this->app->make(VideoRepositoryInterface::class)            
+            $this->app->make(VideoRepositoryInterface::class)
         );
 
         $response = $useCase->execute(new PaginateInputVideoDTO());

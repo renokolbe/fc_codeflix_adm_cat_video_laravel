@@ -6,11 +6,11 @@ use Core\Domain\Entity\Video as EntityVideo;
 use Core\Domain\Enum\Rating;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\Paginate\ListVideosUseCase;
 use Core\UseCase\Video\Paginate\DTO\{
     PaginateInputVideoDTO,
-//    PaginateOutputVideoDTO
+    //    PaginateOutputVideoDTO
 };
+use Core\UseCase\Video\Paginate\ListVideosUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -18,7 +18,6 @@ use Tests\Unit\UseCase\UseCaseTrait;
 
 class ListVideosUseCaseUnitTest extends TestCase
 {
-
     use UseCaseTrait;
 
     public function testEmptyPaginate()
@@ -50,7 +49,7 @@ class ListVideosUseCaseUnitTest extends TestCase
 
         $mockRepo = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
         $mockRepo->shouldReceive('paginate')->times(1)->andReturn($mockPagination);
-                
+
         $useCase = new ListVideosUseCase($mockRepo);
         $responseUseCase = $useCase->execute($this->createInputDTO());
 
@@ -75,7 +74,7 @@ class ListVideosUseCaseUnitTest extends TestCase
         );
     }
 
-    private function createInputDTO() 
+    private function createInputDTO()
     {
         return new PaginateInputVideoDTO(
             filter: '',
@@ -90,5 +89,4 @@ class ListVideosUseCaseUnitTest extends TestCase
         Mockery::close();
         parent::tearDown();
     }
-
 }

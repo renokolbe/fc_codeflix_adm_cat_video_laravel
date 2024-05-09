@@ -2,11 +2,9 @@
 
 namespace Tests\Unit\UseCase\Genre;
 
-use Core\Domain\Entity\Genre;
 use Core\Domain\Repository\GenreRepositoryInterface;
-use Core\Domain\ValueObject\Uuid;
-use Core\DTO\Genre\GenreInputDTO;
 use Core\DTO\Genre\DeleteGenre\GenreDeleteOutputDTO;
+use Core\DTO\Genre\GenreInputDTO;
 use Core\UseCase\Genre\DeleteGenreUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +13,6 @@ use stdClass;
 
 class DeleteGenreUseCaseUnitTest extends TestCase
 {
-    
     public function testeDelete()
     {
         $id = (string) RamseyUuid::uuid4()->toString();
@@ -24,12 +21,12 @@ class DeleteGenreUseCaseUnitTest extends TestCase
 
         // Expect
         $this->mockRepo->shouldReceive('delete')
-                        ->once()
-                        ->with($id)
-                        ->andReturn(true);
+            ->once()
+            ->with($id)
+            ->andReturn(true);
 
         $this->mockInputDto = Mockery::mock(GenreInputDTO::class, [$id]);
-                        
+
         $useCase = new DeleteGenreUseCase($this->mockRepo);
 
         // action
@@ -41,19 +38,19 @@ class DeleteGenreUseCaseUnitTest extends TestCase
 
         $this->tearDown();
     }
-    
+
     public function testeDeleteNotFound()
     {
         $id = (string) RamseyUuid::uuid4()->toString();
 
         $this->mockRepo = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
         $this->mockRepo->shouldReceive('delete')
-                        ->times(1)
-                        ->with($id)
-                        ->andReturn(false);
+            ->times(1)
+            ->with($id)
+            ->andReturn(false);
 
         $this->mockInputDto = Mockery::mock(GenreInputDTO::class, [$id]);
-                        
+
         $useCase = new DeleteGenreUseCase($this->mockRepo);
         $responseUseCase = $useCase->execute($this->mockInputDto);
 
@@ -69,5 +66,4 @@ class DeleteGenreUseCaseUnitTest extends TestCase
 
         parent::tearDown();
     }
-    
 }

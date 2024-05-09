@@ -14,7 +14,6 @@ use stdClass;
 
 class ListCategoryUseCaseUnitTest extends TestCase
 {
-
     public function testGetById()
     {
         $id = (string) Uuid::uuid4()->toString();
@@ -30,14 +29,14 @@ class ListCategoryUseCaseUnitTest extends TestCase
 
         $this->mockRepo = Mockery::mock(stdClass::class, CategoryRepositoryInterface::class);
         $this->mockRepo->shouldReceive('findById')
-                        ->times(1)
-                        ->with($id)
-                        ->andReturn($this->mockEntity);
+            ->times(1)
+            ->with($id)
+            ->andReturn($this->mockEntity);
 
         $this->mockInputDto = Mockery::mock(CategoryInputDTO::class, [
             $id,
         ]);
-                        
+
         $useCase = new ListCategoryUseCase($this->mockRepo);
         $responseUseCase = $useCase->execute($this->mockInputDto);
 
@@ -50,22 +49,22 @@ class ListCategoryUseCaseUnitTest extends TestCase
         /**
          * Spies
          */
-/*
-// Nao há necessidade do SPIES se usar no mock o parametro times() para verificar a quatidade de chamadas da funcionalidade
-// No caso do findById o parametro once() agrante que foi feita apenas uma chamada
+        /*
+        // Nao há necessidade do SPIES se usar no mock o parametro times() para verificar a quatidade de chamadas da funcionalidade
+        // No caso do findById o parametro once() agrante que foi feita apenas uma chamada
 
-        $this->spy = Mockery::spy(stdClass::class, CategoryRepositoryInterface::class);
-        $this->spy->shouldReceive('findById')
-                        ->with($id)
-                        ->andReturn($this->mockEntity);
- 
-        $useCaseSpy = new ListCategoryUseCase($this->spy);
-        $responseUseCaseSpy = $useCaseSpy->execute($this->mockInputDto);
- 
-        $this->spy->shouldHaveReceived('findById');
-*/
+                $this->spy = Mockery::spy(stdClass::class, CategoryRepositoryInterface::class);
+                $this->spy->shouldReceive('findById')
+                                ->with($id)
+                                ->andReturn($this->mockEntity);
+
+                $useCaseSpy = new ListCategoryUseCase($this->spy);
+                $responseUseCaseSpy = $useCaseSpy->execute($this->mockInputDto);
+
+                $this->spy->shouldHaveReceived('findById');
+        */
         $this->tearDown();
-                               
+
     }
 
     protected function tearDown(): void

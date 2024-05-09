@@ -9,61 +9,66 @@ use Throwable;
 
 class DomainValidationUnitTest extends TestCase
 {
-    public function testNotNull(){
+    public function testNotNull()
+    {
 
-        try{
+        try {
             $value = '';
             DomainValidation::notNull($value);
             $this->assertTrue(false);
-        }catch(Throwable $th){
+        } catch (Throwable $th) {
             $this->assertInstanceOf(EntityValidationException::class, $th);
         }
     }
-    public function testNotNullExceptMessage(){
 
-        try{
+    public function testNotNullExceptMessage()
+    {
+
+        try {
             $value = '';
             DomainValidation::notNull($value, 'custom message');
             $this->assertTrue(false);
-        }catch(Throwable $th){
+        } catch (Throwable $th) {
             $this->assertInstanceOf(EntityValidationException::class, $th, 'custom message');
         }
     }
 
-    public function testStrMaxLength(){
+    public function testStrMaxLength()
+    {
 
-        try{
+        try {
             $value = 'palavra';
             DomainValidation::StrMaxLength($value, 5, 'new custom message');
             $this->assertTrue(false);
-        }catch(Throwable $th){
+        } catch (Throwable $th) {
             $this->assertInstanceOf(EntityValidationException::class, $th, 'custom message');
         }
 
     }
 
-    public function testStrMinLength(){
+    public function testStrMinLength()
+    {
 
-        try{
+        try {
             $value = 'palavra';
             DomainValidation::StrMinLength($value, 10, 'new custom message');
             $this->assertTrue(false);
-        }catch(Throwable $th){
+        } catch (Throwable $th) {
             $this->assertInstanceOf(EntityValidationException::class, $th, 'custom message');
         }
 
     }
 
-    public function testStrCanBeNullAndMaxLength(){
+    public function testStrCanBeNullAndMaxLength()
+    {
 
-        try{
+        try {
             $value = 'palavra';
             DomainValidation::StrCanBeNullAndMaxLength($value, 5, 'new custom message');
             $this->assertTrue(false);
-        }catch(Throwable $th){
+        } catch (Throwable $th) {
             $this->assertInstanceOf(EntityValidationException::class, $th, 'custom message');
         }
 
     }
-    
 }

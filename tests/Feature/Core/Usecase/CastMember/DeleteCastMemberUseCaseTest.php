@@ -24,7 +24,7 @@ class DeleteCastMemberUseCaseTest extends TestCase
         $this->assertTrue($response->success);
 
         $this->assertSoftDeleted('cast_members', [
-            'id' => $castMemberDb->id
+            'id' => $castMemberDb->id,
         ]);
 
     }

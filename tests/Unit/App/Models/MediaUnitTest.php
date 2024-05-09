@@ -3,9 +3,9 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\Media;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Traits\UuidTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class MediaUnitTest extends ModelTestCase
 {
@@ -40,5 +40,4 @@ class MediaUnitTest extends ModelTestCase
             'deleted_at' => 'datetime',  // Default do Laravel
         ];
     }
-
 }

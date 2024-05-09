@@ -2,10 +2,8 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\Genre as ModelGenre;
 use App\Models\Category as ModelCategory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Genre as ModelGenre;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Tests\Traits\WithoutMiddlewareTrait;
@@ -13,6 +11,7 @@ use Tests\Traits\WithoutMiddlewareTrait;
 class GenreApiTest extends TestCase
 {
     use WithoutMiddlewareTrait;
+
     protected $endpoint = '/api/genres';
 
     public function testIndexEmpty()
@@ -44,7 +43,7 @@ class GenreApiTest extends TestCase
                 'to',
                 'from',
                 'per_page',
-            ]
+            ],
         ]);
     }
 
@@ -59,7 +58,7 @@ class GenreApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name field is required.', $response->json('errors.name')[0]);
@@ -78,7 +77,7 @@ class GenreApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name must be at least 3 characters.', $response->json('errors.name')[0]);
@@ -87,7 +86,7 @@ class GenreApiTest extends TestCase
     public function testStoreValidationNameTooLong()
     {
         $data = [
-            'name' =>  str_repeat('a', 256),
+            'name' => str_repeat('a', 256),
         ];
         $response = $this->postJson($this->endpoint, $data);
 
@@ -97,7 +96,7 @@ class GenreApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name must not be greater than 255 characters.', $response->json('errors.name')[0]);
@@ -113,7 +112,7 @@ class GenreApiTest extends TestCase
         ];
 
         $response = $this->postJson($this->endpoint, $data);
- 
+
         //$response->dump();
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -121,7 +120,7 @@ class GenreApiTest extends TestCase
             'message',
             'errors' => [
                 'categories_ids',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('categories_ids', $response->json('errors'));
         $this->assertEquals('The selected categories ids is invalid.', $response->json('errors.categories_ids')[0]);
@@ -135,12 +134,12 @@ class GenreApiTest extends TestCase
         $data = [
             'name' => 'Genre criado pela API',
             'is_active' => true,
-      //            'categoriesId' => [$categoriesDb[0]->id, $categoriesDb[1]->id, $categoriesDb[2]->id],
+            //            'categoriesId' => [$categoriesDb[0]->id, $categoriesDb[1]->id, $categoriesDb[2]->id],
             'categories_ids' => $categoriesDb->pluck('id')->toArray(),
         ];
 
         $response = $this->postJson($this->endpoint, $data);
- 
+
         //$response->dump();
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonStructure([
@@ -149,15 +148,15 @@ class GenreApiTest extends TestCase
                 'name',
                 'is_active',
                 'created_at',
-            ]
-         ]);
-        
-         $response2 = $this->postJson($this->endpoint, [
+            ],
+        ]);
+
+        $response2 = $this->postJson($this->endpoint, [
             'name' => 'Genre Name 2 Test from API',
             'is_active' => false,
             'categories_ids' => $categoriesDb->pluck('id')->toArray(),
         ]);
- 
+
         //$response2->dump();
         $response2->assertStatus(Response::HTTP_CREATED);
         $this->assertEquals('Genre Name 2 Test from API', $response2->json('data')['name']);
@@ -178,7 +177,7 @@ class GenreApiTest extends TestCase
     public function testShow()
     {
         $genre = ModelGenre::factory()->create();
-        $response = $this->getJson($this->endpoint . "/{$genre->id}");
+        $response = $this->getJson($this->endpoint."/{$genre->id}");
 
         //$response->dump();
 
@@ -189,7 +188,7 @@ class GenreApiTest extends TestCase
                 'name',
                 'is_active',
                 'created_at',
-            ]
+            ],
         ]);
         $this->assertEquals($genre->id, $response->json('data.id'));
         $this->assertEquals($genre->name, $response->json('data.name'));
@@ -228,7 +227,7 @@ class GenreApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name field is required.', $response->json('errors.name')[0]);
@@ -249,7 +248,7 @@ class GenreApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name must be at least 3 characters.', $response->json('errors.name')[0]);
@@ -270,7 +269,7 @@ class GenreApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name must not be greater than 255 characters.', $response->json('errors.name')[0]);
@@ -291,7 +290,7 @@ class GenreApiTest extends TestCase
             'message',
             'errors' => [
                 'categories_ids',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('categories_ids', $response->json('errors'));
         $this->assertEquals('The categories ids field is required.', $response->json('errors.categories_ids')[0]);
@@ -311,7 +310,7 @@ class GenreApiTest extends TestCase
             'message',
             'errors' => [
                 'categories_ids',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('categories_ids', $response->json('errors'));
         $this->assertEquals('The selected categories ids is invalid.', $response->json('errors.categories_ids')[0]);
@@ -334,7 +333,7 @@ class GenreApiTest extends TestCase
                 'name',
                 'is_active',
                 'created_at',
-            ]
+            ],
         ]);
         $this->assertEquals('Genre Test from API', $response->json('data')['name']);
         $this->assertEquals(true, $response->json('data')['is_active']);

@@ -7,31 +7,31 @@ use Core\Domain\Repository\PaginationInterface;
 
 class ApiAdapter
 {
-
     public function __construct(
         private PaginationInterface $response
-    ){}
+    ) {
+    }
 
     public function toJson()
     {
         return DefaultResource::collection($this->response->items())
-        ->additional([
-            'meta' => [
-                'total' => $this->response->total(),
-                'current_page' => $this->response->currentPage(),
-                'last_page' => $this->response->lastPage(),
-                'first_page' => $this->response->firstPage(),
-                'to' => $this->response->to(),
-                'from' => $this->response->from(),
-                'per_page' => $this->response->perPage()
-            ]
-        ]);
+            ->additional([
+                'meta' => [
+                    'total' => $this->response->total(),
+                    'current_page' => $this->response->currentPage(),
+                    'last_page' => $this->response->lastPage(),
+                    'first_page' => $this->response->firstPage(),
+                    'to' => $this->response->to(),
+                    'from' => $this->response->from(),
+                    'per_page' => $this->response->perPage(),
+                ],
+            ]);
     }
 
     public static function json(object $data, int $statusCode = 200)
     {
-        return  (new DefaultResource($data))
-                ->response()
-                ->setStatusCode($statusCode);
+        return (new DefaultResource($data))
+            ->response()
+            ->setStatusCode($statusCode);
     }
 }

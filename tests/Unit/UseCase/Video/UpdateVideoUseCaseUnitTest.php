@@ -2,13 +2,10 @@
 
 namespace Tests\Unit\UseCase\Video;
 
-use Core\Domain\Enum\Rating;
 use Core\Domain\ValueObject\Uuid;
+use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
+use Core\UseCase\Video\Update\DTO\UpdateOutputVideoDTO;
 use Core\UseCase\Video\Update\UpdateVideoUseCase;
-use Core\UseCase\Video\Update\DTO\{
-    UpdateInputVideoDTO,
-    UpdateOutputVideoDTO
-};
 use Mockery;
 
 class UpdateVideoUseCaseUnitTest extends BaseVideoUseCaseUnitTest
@@ -28,21 +25,22 @@ class UpdateVideoUseCaseUnitTest extends BaseVideoUseCaseUnitTest
     {
         return 'update';
     }
+
     protected function getUseCase(): string
     {
         return UpdateVideoUseCase::class;
     }
 
     protected function createMockInputDTO(
-        array $categoriesIds = [], 
-        array $genresIds = [], 
+        array $categoriesIds = [],
+        array $genresIds = [],
         array $castMembersIds = [],
         ?array $videoFile = null,
         ?array $trailerFile = null,
         ?array $thumbFile = null,
         ?array $thumbHalf = null,
         ?array $bannerFile = null
-    ){
+    ) {
         return Mockery::mock(UpdateInputVideoDTO::class, [
             Uuid::random(),
             'Video title',
@@ -57,5 +55,4 @@ class UpdateVideoUseCaseUnitTest extends BaseVideoUseCaseUnitTest
             $bannerFile,
         ]);
     }
-
 }

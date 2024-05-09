@@ -23,7 +23,7 @@ class ListCategoryUseCaseTest extends TestCase
                 id: $categoryDB->id
             )
         );
-        
+
         $this->assertInstanceOf(CategoryOutputDTO::class, $responseUseCase);
         $this->assertEquals($categoryDB->id, $responseUseCase->id);
         $this->assertEquals($categoryDB->name, $responseUseCase->name);

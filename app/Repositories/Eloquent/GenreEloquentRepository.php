@@ -41,41 +41,46 @@ class GenreEloquentRepository implements GenreRepositoryInterface
         if (! $genre = $this->model->find($id)) {
             throw new NotFoundException('Genre Not Found');
         }
+
         return $this->toGenre($genre);
     }
 
     public function getIdsListIds(array $genresId = []): array
     {
         return $this->model
-                    ->whereIn('id', $genresId)
-                    ->pluck('id')
-                    ->toArray();
+            ->whereIn('id', $genresId)
+            ->pluck('id')
+            ->toArray();
     }
 
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
         $genres = $this->model
-                    ->where(function ($query) use ($filter) {
-                        if ($filter)
-                            $query->where('name', 'LIKE', "%{$filter}%");
-                    })
-                    ->orderBy('name', $order)
-                    ->get();
-                            
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('name', 'LIKE', "%{$filter}%");
+                }
+            })
+            ->orderBy('name', $order)
+            ->get();
+
         return $genres->toArray();
     }
+
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
     {
-        $paginator =$this->model
-                ->where(function ($query) use ($filter) {
-                    if ($filter)
-                        $query->where('name', 'LIKE', "%{$filter}%");
-                    })
-                ->orderBy('name', $order)
-                ->paginate();
+        $paginator = $this->model
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('name', 'LIKE', "%{$filter}%");
+                }
+            })
+            ->orderBy('name', $order)
+            ->paginate();
 
         return new PaginationPresenter($paginator);
     }
+
     public function update(EntityGenre $genre): EntityGenre
     {
         if (! $genreDb = $this->model->find($genre->id())) {
@@ -95,6 +100,7 @@ class GenreEloquentRepository implements GenreRepositoryInterface
 
         return $this->toGenre($genreDb);
     }
+
     public function delete(string $id): bool
     {
         if (! $genreDb = $this->model->find($id)) {

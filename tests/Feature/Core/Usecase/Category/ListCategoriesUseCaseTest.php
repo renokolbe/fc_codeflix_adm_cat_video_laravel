@@ -11,18 +11,17 @@ use Tests\TestCase;
 
 class ListCategoriesUseCaseTest extends TestCase
 {
-    
     public function test_list_empty()
     {
         $useCase = $this->createUseCase();
 
         $responseUseCase = $useCase->execute(new ListCategoriesInputDTO());
-        
+
         $this->assertInstanceOf(ListCategoriesOutputDTO::class, $responseUseCase);
         $this->assertCount(0, $responseUseCase->items);
 
     }
-    
+
     public function test_list_all_categories()
     {
         $categoryDB = ModelCategory::factory()->count(20)->create();
@@ -32,7 +31,7 @@ class ListCategoriesUseCaseTest extends TestCase
             new ListCategoriesInputDTO(
             )
         );
-        
+
         $this->assertInstanceOf(ListCategoriesOutputDTO::class, $responseUseCase);
         $this->assertCount(15, $responseUseCase->items);
         $this->assertEquals(count($categoryDB), $responseUseCase->total);
@@ -43,6 +42,7 @@ class ListCategoriesUseCaseTest extends TestCase
     {
         $model = new ModelCategory();
         $repository = new CategoryEloquentRepository($model);
+
         return new ListCategoriesUseCase($repository);
 
     }

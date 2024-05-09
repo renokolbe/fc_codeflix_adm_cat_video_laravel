@@ -11,10 +11,12 @@ use Core\Domain\ValueObject\Media;
 use Core\Domain\ValueObject\Uuid;
 use DateTime;
 
-class Video extends Entity{
-
+class Video extends Entity
+{
     protected array $categoriesId = [];
+
     protected array $genresId = [];
+
     protected array $castMembersIds = [];
 
     public function __construct(
@@ -32,7 +34,7 @@ class Video extends Entity{
         protected ?Image $bannerFile = null,
         protected ?Media $trailerFile = null,
         protected ?Media $videoFile = null,
-    ){
+    ) {
         parent::__construct();
         $this->id = $this->id ?? Uuid::random();
         $this->createdAt = $this->createdAt ?? new DateTime();
@@ -43,7 +45,7 @@ class Video extends Entity{
     {
         $this->title = $title;
         $this->description = $description;
-        
+
         $this->validate();
     }
 
@@ -139,38 +141,38 @@ class Video extends Entity{
     protected function validate()
     {
         VideoValidatorFactory::create()->validate($this);
-        
-    /*        
-        $this->notification = new Notification();
 
-        if (empty($this->title)) {
-            $this->notification->addError([
-                'context' => 'video',
-                'message' => 'title should not be empty or null',
-            ]);
-        }
+        /*
+            $this->notification = new Notification();
 
-        if (strlen($this->title) < 3) {
-            $this->notification->addError([
-                'context' => 'video',
-                'message' => 'title must be greater than 3 characters',
-            ]);
-        }
+            if (empty($this->title)) {
+                $this->notification->addError([
+                    'context' => 'video',
+                    'message' => 'title should not be empty or null',
+                ]);
+            }
 
-        if (strlen($this->title) > 255) {
-            $this->notification->addError([
-                'context' => 'video',
-                'message' => 'title must be not greater than 255 characters',
-            ]);
-        }
+            if (strlen($this->title) < 3) {
+                $this->notification->addError([
+                    'context' => 'video',
+                    'message' => 'title must be greater than 3 characters',
+                ]);
+            }
 
-        if ( !empty($this->description) && strlen($this->description) < 3) {
-            $this->notification->addError([
-                'context' => 'video',
-                'message' => 'description must be greater than 3 characters',
-            ]);
-        }
-    */        
+            if (strlen($this->title) > 255) {
+                $this->notification->addError([
+                    'context' => 'video',
+                    'message' => 'title must be not greater than 255 characters',
+                ]);
+            }
+
+            if ( !empty($this->description) && strlen($this->description) < 3) {
+                $this->notification->addError([
+                    'context' => 'video',
+                    'message' => 'description must be greater than 3 characters',
+                ]);
+            }
+        */
 
         if ($this->notification->hasErrors()) {
             throw new NotificationException(

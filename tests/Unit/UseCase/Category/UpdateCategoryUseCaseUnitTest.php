@@ -51,20 +51,20 @@ class UpdateCategoryUseCaseUnitTest extends TestCase
         /**
          * Spies
          */
-/*
-// Nao há necessidade do SPIES se usar no mock o parametro times() para verificar a quatidade de chamadas da funcionalidade
-// No caso do findById o parametro once() agrante que foi feita apenas uma chamada
+        /*
+        // Nao há necessidade do SPIES se usar no mock o parametro times() para verificar a quatidade de chamadas da funcionalidade
+        // No caso do findById o parametro once() agrante que foi feita apenas uma chamada
 
-         $this->spy = Mockery::spy(stdClass::class, CategoryRepositoryInterface::class);
-         $this->spy->shouldReceive('findById')->andReturn($this->mockEntity);
-         $this->spy->shouldReceive('update')->andReturn($this->mockEntity);
- 
-         $useCaseSpy = new UpdateCategoryUseCase($this->spy);
-         $responseUseCaseSpy = $useCaseSpy->execute($this->mockInputDto);
- 
-         $this->spy->shouldHaveReceived('findById');
-         $this->spy->shouldHaveReceived('update');
-*/
+                 $this->spy = Mockery::spy(stdClass::class, CategoryRepositoryInterface::class);
+                 $this->spy->shouldReceive('findById')->andReturn($this->mockEntity);
+                 $this->spy->shouldReceive('update')->andReturn($this->mockEntity);
+
+                 $useCaseSpy = new UpdateCategoryUseCase($this->spy);
+                 $responseUseCaseSpy = $useCaseSpy->execute($this->mockInputDto);
+
+                 $this->spy->shouldHaveReceived('findById');
+                 $this->spy->shouldHaveReceived('update');
+        */
         Mockery::close();
     }
 }

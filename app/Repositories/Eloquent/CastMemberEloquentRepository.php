@@ -2,12 +2,12 @@
 
 namespace App\Repositories\Eloquent;
 
-use Core\Domain\Repository\CastMemberRepositoryInterface;
 use App\Models\CastMember as Model;
 use App\Repositories\Presenters\PaginationPresenter;
 use Core\Domain\Entity\CastMember as EntityCastMember;
 use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Exception\NotFoundException;
+use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\ValueObject\Uuid;
 
@@ -31,12 +31,12 @@ class CastMemberEloquentRepository implements CastMemberRepositoryInterface
 
         return $this->toCastMember($cast);
     }
-    
+
     public function findById(string $id): EntityCastMember
     {
         $cast = $this->model->find($id);
 
-        if (!$cast) {
+        if (! $cast) {
             throw new NotFoundException("Cast Member {$id}  Not Found");
         }
 
@@ -46,36 +46,40 @@ class CastMemberEloquentRepository implements CastMemberRepositoryInterface
     public function getIdsListIds(array $castMembersId = []): array
     {
         return $this->model
-                    ->whereIn('id', $castMembersId)
-                    ->pluck('id')
-                    ->toArray();
+            ->whereIn('id', $castMembersId)
+            ->pluck('id')
+            ->toArray();
     }
 
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
         $castMembers = $this->model
-                ->where(function ($query) use ($filter) {
-                    if ($filter)
-                        $query->where('name', 'LIKE', "%{$filter}%");
-                })
-                ->orderBy('name', $order)
-                ->get();
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('name', 'LIKE', "%{$filter}%");
+                }
+            })
+            ->orderBy('name', $order)
+            ->get();
 
         return $castMembers->toArray();
     }
+
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
     {
-        $paginator =$this->model
-                    ->where(function ($query) use ($filter) {
-                        if ($filter)
-                            $query->where('name', 'LIKE', "%{$filter}%");
-                        })
-                    ->orderBy('name', $order)
-                    ->paginate($totalPage);
+        $paginator = $this->model
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('name', 'LIKE', "%{$filter}%");
+                }
+            })
+            ->orderBy('name', $order)
+            ->paginate($totalPage);
 
         return new PaginationPresenter($paginator);
 
     }
+
     public function update(EntityCastMember $castMember): EntityCastMember
     {
         if (! $castMemberDb = $this->model->find($castMember->id())) {
@@ -90,8 +94,9 @@ class CastMemberEloquentRepository implements CastMemberRepositoryInterface
 
         return $this->toCastMember($castMemberDb);
     }
+
     public function delete(string $id): bool
-    {        
+    {
         if (! $castMemberDb = $this->model->find($id)) {
             throw new NotFoundException("Cast Member {$id}  Not Found");
         }
@@ -109,7 +114,7 @@ class CastMemberEloquentRepository implements CastMemberRepositoryInterface
             type: CastMemberType::from($object->type),
             createdAt: $object->created_at
         );
-        
+
         return $entity;
     }
 }

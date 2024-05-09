@@ -6,6 +6,6 @@ class CategoryDeleteOutputDTO
 {
     public function __construct(
         public bool $success,
-    )
-    {}    
+    ) {
+    }
 }

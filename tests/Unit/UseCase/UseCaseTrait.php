@@ -8,7 +8,7 @@ use stdClass;
 
 trait UseCaseTrait
 {
-    protected function mockPagination(array $items = [], )
+    protected function mockPagination(array $items = [])
     {
         $this->mockPagination = Mockery::mock(stdClass::class, PaginationInterface::class);
         $this->mockPagination->shouldReceive('items')->andReturn($items);

@@ -3,10 +3,10 @@
 namespace Tests\Unit\UseCase\Category;
 
 use Core\Domain\Entity\Category;
-use Core\UseCase\Category\CreateCategoryUseCase;
-use \Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\DTO\Category\CreateCategory\CategoryCreateInputDTO;
 use Core\DTO\Category\CreateCategory\CategoryCreateOutputDTO;
+use Core\UseCase\Category\CreateCategoryUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -46,16 +46,16 @@ class CreateCategoryUseCaseUnitTest extends TestCase
         /**
          * Spies
          */
-/*
-// Nao há necessidade do SPIES se usar no mock o parametro times() para verificar a quatidade de chamadas da funcionalidade
-         $this->spy = Mockery::spy(stdClass::class, CategoryRepositoryInterface::class);
-         $this->spy->shouldReceive('insert')->andReturn($this->mockEntity);
- 
-         $useCaseSpy = new CreateCategoryUseCase($this->spy);
-         $responseUseCaseSpy = $useCaseSpy->execute($this->mockInputDto);
- 
-         $this->spy->shouldHaveReceived('insert');
-*/
+        /*
+        // Nao há necessidade do SPIES se usar no mock o parametro times() para verificar a quatidade de chamadas da funcionalidade
+                 $this->spy = Mockery::spy(stdClass::class, CategoryRepositoryInterface::class);
+                 $this->spy->shouldReceive('insert')->andReturn($this->mockEntity);
+
+                 $useCaseSpy = new CreateCategoryUseCase($this->spy);
+                 $responseUseCaseSpy = $useCaseSpy->execute($this->mockInputDto);
+
+                 $this->spy->shouldHaveReceived('insert');
+        */
         Mockery::close();
     }
 }

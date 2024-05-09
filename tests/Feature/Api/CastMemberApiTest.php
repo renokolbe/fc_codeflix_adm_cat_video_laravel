@@ -2,18 +2,17 @@
 
 namespace Tests\Feature\Api;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\CastMember as ModelCastMember;
 use Illuminate\Http\Response;
 use Tests\TestCase;
-use App\Models\CastMember as ModelCastMember;
 use Tests\Traits\WithoutMiddlewareTrait;
 
 class CastMemberApiTest extends TestCase
 {
     use WithoutMiddlewareTrait;
+
     private $endpoint = '/api/cast_members';
-    
+
     public function testIndexEmpty()
     {
         $response = $this->getJson($this->endpoint);
@@ -43,7 +42,7 @@ class CastMemberApiTest extends TestCase
                 'to',
                 'from',
                 'per_page',
-            ]
+            ],
         ]);
     }
 
@@ -66,7 +65,7 @@ class CastMemberApiTest extends TestCase
                 'to',
                 'from',
                 'per_page',
-            ]
+            ],
         ]);
         $this->assertEquals(20, $response->json('meta.total'));
         $this->assertEquals(2, $response->json('meta.current_page'));
@@ -76,7 +75,7 @@ class CastMemberApiTest extends TestCase
     {
         ModelCastMember::factory(10)->create();
         ModelCastMember::factory(20)->create([
-                'name' => 'teste'
+            'name' => 'teste',
         ]);
         $response = $this->getJson("$this->endpoint?filter=teste");
 
@@ -94,7 +93,7 @@ class CastMemberApiTest extends TestCase
                 'to',
                 'from',
                 'per_page',
-            ]
+            ],
         ]);
         $this->assertEquals(20, $response->json('meta.total'));
     }
@@ -103,7 +102,7 @@ class CastMemberApiTest extends TestCase
     {
         ModelCastMember::factory(10)->create();
         ModelCastMember::factory(20)->create([
-                'name' => 'teste'
+            'name' => 'teste',
         ]);
         $response = $this->getJson("$this->endpoint?filter=teste&page=2");
 
@@ -121,7 +120,7 @@ class CastMemberApiTest extends TestCase
                 'to',
                 'from',
                 'per_page',
-            ]
+            ],
         ]);
         $this->assertEquals(20, $response->json('meta.total'));
     }
@@ -135,7 +134,7 @@ class CastMemberApiTest extends TestCase
     public function testShow()
     {
         $castMember = ModelCastMember::factory()->create();
-        $response = $this->getJson($this->endpoint . "/{$castMember->id}");
+        $response = $this->getJson($this->endpoint."/{$castMember->id}");
 
         //$response->dump();
 
@@ -146,7 +145,7 @@ class CastMemberApiTest extends TestCase
                 'name',
                 'type',
                 'created_at',
-            ]
+            ],
         ]);
         $this->assertEquals($castMember->id, $response->json('data.id'));
         $this->assertEquals($castMember->name, $response->json('data.name'));
@@ -164,7 +163,7 @@ class CastMemberApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name field is required.', $response->json('errors.name')[0]);
@@ -183,7 +182,7 @@ class CastMemberApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name must be at least 3 characters.', $response->json('errors.name')[0]);
@@ -192,7 +191,7 @@ class CastMemberApiTest extends TestCase
     public function testStoreValidationNameTooLong()
     {
         $data = [
-            'name' =>  str_repeat('a', 256),
+            'name' => str_repeat('a', 256),
         ];
         $response = $this->postJson($this->endpoint, $data);
 
@@ -202,21 +201,22 @@ class CastMemberApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name must not be greater than 255 characters.', $response->json('errors.name')[0]);
     }
+
     public function testStore()
     {
 
         $data = [
             'name' => 'Actor criado pela API',
-            'type' => 2
+            'type' => 2,
         ];
 
         $response = $this->postJson($this->endpoint, $data);
- 
+
         //$response->dump();
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonStructure([
@@ -225,19 +225,19 @@ class CastMemberApiTest extends TestCase
                 'name',
                 'type',
                 'created_at',
-            ]
-         ]);
-         $this->assertDatabaseHas('cast_members', [
+            ],
+        ]);
+        $this->assertDatabaseHas('cast_members', [
             'id' => $response['data']['id'],
             'name' => 'Actor criado pela API',
             'type' => 2,
         ]);
-        
-         $response2 = $this->postJson($this->endpoint, [
+
+        $response2 = $this->postJson($this->endpoint, [
             'name' => 'Director criado pela API',
-            'type' => 1
+            'type' => 1,
         ]);
- 
+
         //$response2->dump();
         $response2->assertStatus(Response::HTTP_CREATED);
         $this->assertEquals('Director criado pela API', $response2->json('data')['name']);
@@ -248,11 +248,12 @@ class CastMemberApiTest extends TestCase
             'type' => 1,
         ]);
     }
+
     public function testUpdateNotFound()
     {
         $data = [
             'name' => 'Actor criado pela API',
-            'type' => 2
+            'type' => 2,
         ];
 
         $response = $this->putJson("{$this->endpoint}/0", $data);
@@ -276,7 +277,7 @@ class CastMemberApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name field is required.', $response->json('errors.name')[0]);
@@ -295,7 +296,7 @@ class CastMemberApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name must be at least 3 characters.', $response->json('errors.name')[0]);
@@ -314,7 +315,7 @@ class CastMemberApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name must not be greater than 255 characters.', $response->json('errors.name')[0]);
@@ -325,7 +326,7 @@ class CastMemberApiTest extends TestCase
         $castMemberDb = ModelCastMember::factory()->create();
         $data = [
             'name' => 'Actor criado pela API',
-            'type' => 2
+            'type' => 2,
         ];
         $response = $this->putJson("{$this->endpoint}/{$castMemberDb->id}", $data);
         //$response->dump();
@@ -336,7 +337,7 @@ class CastMemberApiTest extends TestCase
                 'name',
                 'type',
                 'created_at',
-            ]
+            ],
         ]);
         $this->assertEquals('Actor criado pela API', $response->json('data')['name']);
         $this->assertDatabaseHas('cast_members', [
@@ -361,5 +362,4 @@ class CastMemberApiTest extends TestCase
             'id' => $castMemberDb->id,
         ]);
     }
-
 }

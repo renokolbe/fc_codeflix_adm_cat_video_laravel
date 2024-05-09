@@ -8,9 +8,8 @@ trait UuidTrait
 {
     /**
      * The "booted" method of the model.
-     * 
+     *
      * @return void
-     * 
      */
     protected static function booted()
     {
@@ -18,5 +17,4 @@ trait UuidTrait
             $model->id = Str::uuid();
         });
     }
-
 }

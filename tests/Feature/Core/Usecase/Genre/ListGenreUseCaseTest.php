@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Core\Usecase\Genre;
 
-use App\Models\Category as ModelCategory;
 use App\Models\Genre as ModelGenre;
 use App\Repositories\Eloquent\{
     GenreEloquentRepository
@@ -25,7 +24,7 @@ class ListGenreUseCaseTest extends TestCase
             id: $genreDB->id
         )
         );
-        
+
         $this->assertInstanceOf(GenreOutputDTO::class, $responseUseCase);
         $this->assertEquals($genreDB->id, $responseUseCase->id);
         $this->assertEquals($genreDB->name, $responseUseCase->name);

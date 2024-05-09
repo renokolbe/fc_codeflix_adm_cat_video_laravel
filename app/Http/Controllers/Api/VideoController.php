@@ -14,10 +14,8 @@ use Core\UseCase\Video\Delete\DeleteVideoUseCase;
 use Core\UseCase\Video\Delete\DTO\DeleteInputVideoDTO;
 use Core\UseCase\Video\List\DTO\ListInputVideoDTO;
 use Core\UseCase\Video\List\ListVideoUseCase;
-use Core\UseCase\Video\Paginate\{
-    DTO\PaginateInputVideoDTO,
-    ListVideosUseCase
-};
+use Core\UseCase\Video\Paginate\DTO\PaginateInputVideoDTO;
+use Core\UseCase\Video\Paginate\ListVideosUseCase;
 use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
 use Core\UseCase\Video\Update\UpdateVideoUseCase;
 use Illuminate\Http\Request;
@@ -30,11 +28,11 @@ class VideoController extends Controller
 
         $response = $useCase->execute(
             input: new PaginateInputVideoDTO(
-             filter: $request->get('filter', '') ?? '',
-             order: $request->get('order', 'DESC'),
-             page: (int) $request->get('page', 1),
-             totalPage: (int) $request->get('totalPage', 15),
-             ));
+                filter: $request->get('filter', '') ?? '',
+                order: $request->get('order', 'DESC'),
+                page: (int) $request->get('page', 1),
+                totalPage: (int) $request->get('totalPage', 15),
+            ));
 
         //dd($response);
 
@@ -52,7 +50,7 @@ class VideoController extends Controller
         //     ]);
 
         return (new ApiAdapter($response))
-                ->toJson();
+            ->toJson();
 
     }
 
@@ -66,7 +64,6 @@ class VideoController extends Controller
 
     public function store(CreateVideoUseCase $useCase, StoreVideoRequest $request)
     {
-
 
         $response = $useCase->exec(
             input: new CreateInputVideoDTO(
@@ -92,7 +89,7 @@ class VideoController extends Controller
         //         ->setStatusCode(Response::HTTP_CREATED)
         // ;
         return ApiAdapter::json($response, Response::HTTP_CREATED);
-        
+
     }
 
     public function update(UpdateVideoUseCase $useCase, string $id, UpdateVideoRequest $request)
@@ -120,7 +117,7 @@ class VideoController extends Controller
         // ;
 
         return ApiAdapter::json($response);
-        
+
     }
 
     public function destroy(DeleteVideoUseCase $useCase, string $id)

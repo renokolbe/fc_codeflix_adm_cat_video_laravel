@@ -5,10 +5,8 @@ namespace Tests\Feature\Core\Usecase\Video;
 use App\Models\Video;
 use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\Delete\{
-    DeleteVideoUseCase,
-    DTO\DeleteInputVideoDTO
-};
+use Core\UseCase\Video\Delete\DeleteVideoUseCase;
+use Core\UseCase\Video\Delete\DTO\DeleteInputVideoDTO;
 use Tests\TestCase;
 
 class DeleteVideoUseCaseTest extends TestCase
@@ -27,7 +25,7 @@ class DeleteVideoUseCaseTest extends TestCase
 
         $this->assertTrue($response->success);
         $this->assertSoftDeleted('videos', [
-            'id' => $video->id
+            'id' => $video->id,
         ]);
     }
 

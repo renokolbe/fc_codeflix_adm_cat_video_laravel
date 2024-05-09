@@ -3,16 +3,15 @@
 namespace Core\UseCase\Video\List;
 
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\List\DTO\{
-    ListInputVideoDTO,
-    ListOutputVideoDTO
-};
+use Core\UseCase\Video\List\DTO\ListInputVideoDTO;
+use Core\UseCase\Video\List\DTO\ListOutputVideoDTO;
 
 class ListVideoUseCase
 {
     public function __construct(
         private VideoRepositoryInterface $videoRepository
-    ){}
+    ) {
+    }
 
     public function execute(ListInputVideoDTO $input): ListOutputVideoDTO
     {

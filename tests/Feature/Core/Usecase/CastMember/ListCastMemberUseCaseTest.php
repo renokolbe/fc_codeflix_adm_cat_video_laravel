@@ -7,7 +7,6 @@ use App\Repositories\Eloquent\CastMemberEloquentRepository;
 use Core\DTO\CastMember\CastMemberInputDTO;
 use Core\DTO\CastMember\CastMemberOutputDTO;
 use Core\UseCase\CastMember\ListCastMemberUseCase;
-
 use Tests\TestCase;
 
 class ListCastMemberUseCaseTest extends TestCase

@@ -2,15 +2,11 @@
 
 namespace Core\UseCase\Video\Update;
 
-use Core\Domain\Builder\Video\{
-    Builder,
-    UpdateVideoBuilder
-};
+use Core\Domain\Builder\Video\Builder;
+use Core\Domain\Builder\Video\UpdateVideoBuilder;
 use Core\UseCase\Video\BaseVideoUseCase;
-use Core\UseCase\Video\Update\DTO\{
-    UpdateInputVideoDTO,
-    UpdateOutputVideoDTO
-};
+use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
+use Core\UseCase\Video\Update\DTO\UpdateOutputVideoDTO;
 use Throwable;
 
 class UpdateVideoUseCase extends BaseVideoUseCase
@@ -48,7 +44,7 @@ class UpdateVideoUseCase extends BaseVideoUseCase
             $this->repository->update($this->builder->getEntity());
 
             // storage do Video, usando o $id, gera evento de Video criado
-            
+
             $this->storeFiles($input);
 
             //$this->repository->updateMedia($this->entity);
@@ -72,6 +68,7 @@ class UpdateVideoUseCase extends BaseVideoUseCase
     private function output(): UpdateOutputVideoDTO
     {
         $video = $this->builder->getEntity();
+
         return new UpdateOutputVideoDTO(
             id: $video->id(),
             title: $video->title,
@@ -92,5 +89,4 @@ class UpdateVideoUseCase extends BaseVideoUseCase
         );
 
     }
-
 }

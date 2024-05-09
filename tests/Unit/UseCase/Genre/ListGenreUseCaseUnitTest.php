@@ -15,7 +15,6 @@ use stdClass;
 
 class ListGenreUseCaseUnitTest extends TestCase
 {
-    
     public function testeGetById()
     {
         $id = (string) RamseyUuid::uuid4()->toString();
@@ -31,14 +30,14 @@ class ListGenreUseCaseUnitTest extends TestCase
 
         $this->mockRepo = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
         $this->mockRepo->shouldReceive('findById')
-                        ->once()
-                        ->with($id)
-                        ->andReturn($this->mockEntity);
+            ->once()
+            ->with($id)
+            ->andReturn($this->mockEntity);
 
         $this->mockInputDto = Mockery::mock(GenreInputDTO::class, [
             $id,
         ]);
-                        
+
         $useCase = new ListGenreUseCase($this->mockRepo);
         $responseUseCase = $useCase->execute($this->mockInputDto);
 

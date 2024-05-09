@@ -32,7 +32,7 @@ class VideoResource extends JsonResource
             'banner' => $this->bannerFile ?? '',
             'trailer' => $this->trailerFile ?? '',
             'video' => $this->videoFile ?? '',
-            'thumb_half' => $this->thumbHalfFile ?? ''
+            'thumb_half' => $this->thumbHalfFile ?? '',
         ];
     }
 }

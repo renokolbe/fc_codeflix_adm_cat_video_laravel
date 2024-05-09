@@ -6,10 +6,8 @@ use Core\Domain\Entity\CastMember;
 use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\Domain\ValueObject\Uuid;
-use Core\DTO\CastMember\Create\{
-    CastMemberCreateInputDTO,
-    CastMemberCreateOutputDTO
-};
+use Core\DTO\CastMember\Create\CastMemberCreateInputDTO;
+use Core\DTO\CastMember\Create\CastMemberCreateOutputDTO;
 use Core\UseCase\CastMember\CreateCastMemberUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -36,16 +34,16 @@ class CreateCastMemberUseCaseUnitTest extends TestCase
         $mockRepo = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
         $mockRepo->shouldReceive('insert')->times(1)->andReturn($mockEntity);
 
-        $mockInputDto = Mockery::mock(CastMemberCreateInputDTO::class, [$castMemberName,$castMemberType->value]);
+        $mockInputDto = Mockery::mock(CastMemberCreateInputDTO::class, [$castMemberName, $castMemberType->value]);
 
         $useCase = new CreateCastMemberUseCase($mockRepo);
         $responseUseCase = $useCase->execute($mockInputDto);
 
         $this->assertInstanceOf(CastMemberCreateOutputDTO::class, $responseUseCase);
-        $this->assertNotEmpty($responseUseCase->id);        
-        $this->assertIsString($responseUseCase->id);        
+        $this->assertNotEmpty($responseUseCase->id);
+        $this->assertIsString($responseUseCase->id);
         $this->assertEquals($castMemberName, $responseUseCase->name);
-        $this->assertNotEmpty($responseUseCase->created_at);        
+        $this->assertNotEmpty($responseUseCase->created_at);
         $this->assertEquals($castMemberType->value, $responseUseCase->type);
     }
 }

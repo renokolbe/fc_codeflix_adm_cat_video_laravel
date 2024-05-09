@@ -26,8 +26,7 @@ class RabbitMQCommand extends Command
     public function __construct(
         private AMQPInterface $amqp,
         private ChangeEncodedPathVideo $usecase
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -45,8 +44,8 @@ class RabbitMQCommand extends Command
 
             if (isset($body->Error) && $body->Error === '') {
                 var_dump($body->video);
-                
-                $encodedPath = $body->video->encoded_video_folder . '/stream.mpd';
+
+                $encodedPath = $body->video->encoded_video_folder.'/stream.mpd';
                 $videoId = $body->video->resource_id;
 
                 $input = new ChangeEncodedVideoInputDTO(

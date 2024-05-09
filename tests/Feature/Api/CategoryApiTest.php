@@ -3,8 +3,6 @@
 namespace Tests\Feature\Api;
 
 use App\Models\Category as CategoryModel;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Tests\Traits\WithoutMiddlewareTrait;
@@ -12,6 +10,7 @@ use Tests\Traits\WithoutMiddlewareTrait;
 class CategoryApiTest extends TestCase
 {
     use WithoutMiddlewareTrait;
+
     protected $endpoint = '/api/categories';
 
     // Substituido pela Trait WithoutMiddleware
@@ -46,18 +45,18 @@ class CategoryApiTest extends TestCase
 
         $response->assertJsonStructure([
             'meta' => [
-                'total', 
-                'current_page', 
-                'last_page', 
-                'first_page', 
-                'to', 
-                'from', 
-                'per_page', 
+                'total',
+                'current_page',
+                'last_page',
+                'first_page',
+                'to',
+                'from',
+                'per_page',
             ],
         ]);
 
         $response->assertJsonCount(15, 'data');
-        
+
     }
 
     public function test_list_paginate_categories()
@@ -66,7 +65,7 @@ class CategoryApiTest extends TestCase
         $response = $this->getJson("$this->endpoint?page=2");
 
         //$response->dump();
-        
+
         $response->assertStatus(200);
         $this->assertEquals(2, $response->json('meta.current_page'));
         $this->assertEquals(25, $response['meta']['total']);
@@ -78,7 +77,7 @@ class CategoryApiTest extends TestCase
         $response = $this->getJson("$this->endpoint/123");
         //$response->dump();
         $response->assertStatus(Response::HTTP_NOT_FOUND);
-    }   
+    }
 
     public function test_list_category()
     {
@@ -87,7 +86,7 @@ class CategoryApiTest extends TestCase
         $response = $this->getJson("$this->endpoint/{$categoryDb->id}");
 
         //$response->dump();
-        
+
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
             'data' => [
@@ -96,9 +95,9 @@ class CategoryApiTest extends TestCase
                 'description',
                 'is_active',
                 'created_at',
-            ]
-         ]);
-         $this->assertEquals($categoryDb->id, $response->json('data.id'));
+            ],
+        ]);
+        $this->assertEquals($categoryDb->id, $response->json('data.id'));
     }
 
     public function test_validation_name_empty_store()
@@ -112,7 +111,7 @@ class CategoryApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name field is required.', $response->json('errors.name')[0]);
@@ -132,7 +131,7 @@ class CategoryApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name must be at least 3 characters.', $response->json('errors.name')[0]);
@@ -152,7 +151,7 @@ class CategoryApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name must not be greater than 255 characters.', $response->json('errors.name')[0]);
@@ -166,7 +165,7 @@ class CategoryApiTest extends TestCase
         ];
 
         $response = $this->postJson($this->endpoint, $data);
- 
+
         //$response->dump();
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonStructure([
@@ -176,15 +175,15 @@ class CategoryApiTest extends TestCase
                 'description',
                 'is_active',
                 'created_at',
-            ]
-         ]);
-        
+            ],
+        ]);
+
         $response2 = $this->postJson($this->endpoint, [
             'name' => 'Category Name 2 Test from API',
             'description' => 'Category Description 2 Test from API',
             'is_active' => false,
         ]);
- 
+
         //$response2->dump();
         $response2->assertStatus(Response::HTTP_CREATED);
         $this->assertEquals('Category Name 2 Test from API', $response2->json('data')['name']);
@@ -225,7 +224,7 @@ class CategoryApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
         $this->assertArrayHasKey('name', $response->json('errors'));
         $this->assertEquals('The name must be at least 3 characters.', $response->json('errors.name')[0]);
@@ -242,7 +241,7 @@ class CategoryApiTest extends TestCase
     }
 
     public function test_update()
-    { 
+    {
         $categoryDb = CategoryModel::factory()->create();
 
         $data = [
@@ -261,8 +260,8 @@ class CategoryApiTest extends TestCase
                 'description',
                 'is_active',
                 'created_at',
-            ]
-         ]);
+            ],
+        ]);
         $this->assertEquals('Category Updated from API', $response->json('data')['name']);
         $this->assertDatabaseHas('categories', [
             'id' => $categoryDb->id,
@@ -287,7 +286,7 @@ class CategoryApiTest extends TestCase
         //$response->dump();
         $response->assertStatus(Response::HTTP_NO_CONTENT);
         $this->assertSoftDeleted('categories', [
-            'id' => $categoryDb->id
+            'id' => $categoryDb->id,
         ]);
     }
 }

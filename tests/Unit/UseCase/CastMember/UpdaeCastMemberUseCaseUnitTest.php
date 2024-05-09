@@ -15,24 +15,24 @@ use Ramsey\Uuid\Uuid as RamseyUuid;
 use stdClass;
 
 class UpdaeCastMemberUseCaseUnitTest extends TestCase
-{   
+{
     public function testUpdate()
     {
         $uuid = (string) RamseyUuid::uuid4()->toString();
         $castMemberName = 'Actor 1';
         $castMemberType = CastMemberType::ACTOR;
 
-        $mockEntity =  Mockery::mock(CastMember::class, [
+        $mockEntity = Mockery::mock(CastMember::class, [
             $castMemberName,
             $castMemberType,
             new Uuid($uuid),
         ]);
-        
+
         $mockEntity->shouldReceive('id')->andReturn($uuid);
         $mockEntity->shouldReceive('createdAt')->andReturn(date('Y-m-d H:i:s'));
         $mockEntity->shouldReceive('update')->times(1);
 
-        $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);        
+        $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
         $mockRepository->shouldReceive('findById')->once()->andReturn($mockEntity);
         $mockRepository->shouldReceive('update')->times(1)->andReturn($mockEntity);
 

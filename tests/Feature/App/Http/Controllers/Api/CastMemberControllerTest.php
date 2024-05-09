@@ -2,21 +2,16 @@
 
 namespace Tests\Feature\App\Http\Controllers\Api;
 
-use App\Http\Requests\{
-    StoreCastMemberRequest,
-    UpdateCastMemberRequest
-};
 use App\Http\Controllers\Api\CastMemberController;
-use App\Http\Resources\CastMemberResource;
-use Core\UseCase\CastMember\{
-    ListCastMembersUseCase,
-    CreateCastMemberUseCase,
-    DeleteCastMemberUseCase,
-    ListCastMemberUseCase,
-    UpdateCastMemberUseCase
-};
-use App\Repositories\Eloquent\CastMemberEloquentRepository;
+use App\Http\Requests\StoreCastMemberRequest;
+use App\Http\Requests\UpdateCastMemberRequest;
 use App\Models\CastMember as ModelCastMember;
+use App\Repositories\Eloquent\CastMemberEloquentRepository;
+use Core\UseCase\CastMember\CreateCastMemberUseCase;
+use Core\UseCase\CastMember\DeleteCastMemberUseCase;
+use Core\UseCase\CastMember\ListCastMembersUseCase;
+use Core\UseCase\CastMember\ListCastMemberUseCase;
+use Core\UseCase\CastMember\UpdateCastMemberUseCase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -26,8 +21,8 @@ use Tests\TestCase;
 
 class CastMemberControllerTest extends TestCase
 {
-
     protected $repository;
+
     protected $controller;
 
     protected function setUp(): void
@@ -40,6 +35,7 @@ class CastMemberControllerTest extends TestCase
 
         parent::setUp();
     }
+
     public function test_index()
     {
         $useCase = new ListCastMembersUseCase($this->repository);
@@ -61,7 +57,7 @@ class CastMemberControllerTest extends TestCase
         $request->headers->set('Content-Type', 'application/json');
         $request->setJson(new ParameterBag([
             'name' => 'CastMember Actor Name Test',
-            'type' => 2
+            'type' => 2,
         ]));
 
         //dump($request);
@@ -78,7 +74,7 @@ class CastMemberControllerTest extends TestCase
 
         $response = $this->controller->show(
             useCase: new ListCastMemberUseCase($this->repository),
-            id : $castMember->id, 
+            id : $castMember->id,
         );
 
         //dump($response);
@@ -97,14 +93,14 @@ class CastMemberControllerTest extends TestCase
         $request->headers->set('Content-Type', 'application/json');
         $request->setJson(new ParameterBag([
             'name' => 'CastMember Actor Name Test Updated',
-            'type' => 2
+            'type' => 2,
         ]));
 
         //dump($request);
         $response = $this->controller->update(
-            request: $request, 
+            request: $request,
             useCase: $useCase,
-            id : $castMember->id, 
+            id : $castMember->id,
         );
 
         //dump($response);
@@ -122,15 +118,14 @@ class CastMemberControllerTest extends TestCase
         $useCase = new DeleteCastMemberUseCase($this->repository);
 
         $castMember = ModelCastMember::factory()->create();
-        
+
         $response = $this->controller->destroy(
             useCase: $useCase,
-            id : $castMember->id, 
+            id : $castMember->id,
         );
 
         //dump($response);
 
         $this->assertEquals(Response::HTTP_NO_CONTENT, $response->status());
     }
-
 }

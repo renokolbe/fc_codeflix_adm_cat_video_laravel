@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use Core\DTO\Category\ListCategories\ListCategoriesInputDTO;
 use App\Http\Resources\CategoryResource;
 use Core\DTO\Category\CategoryInputDTO;
 use Core\DTO\Category\CreateCategory\CategoryCreateInputDTO;
+use Core\DTO\Category\ListCategories\ListCategoriesInputDTO;
 use Core\DTO\Category\UpdateCategory\CategoryUpdateInputDTO;
 use Core\UseCase\Category\CreateCategoryUseCase;
 use Core\UseCase\Category\DeleteCategoryUseCase;
@@ -17,7 +17,6 @@ use Core\UseCase\Category\ListCategoryUseCase;
 use Core\UseCase\Category\UpdateCategoryUseCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Psy\Util\Str;
 
 class CategoryController extends Controller
 {
@@ -29,7 +28,7 @@ class CategoryController extends Controller
             page: (int) $request->get('page', 1),
             totalPage: (int) $request->get('totalPage', 15),
         ));
-        
+
         return CategoryResource::collection(collect($response->items))
             ->additional([
                 'meta' => [
@@ -39,8 +38,8 @@ class CategoryController extends Controller
                     'first_page' => $response->first_page,
                     'to' => $response->to,
                     'from' => $response->from,
-                    'per_page' => $response->per_page
-                ]
+                    'per_page' => $response->per_page,
+                ],
             ]);
     }
 
@@ -89,5 +88,4 @@ class CategoryController extends Controller
 
         return response()->noContent();
     }
-
 }

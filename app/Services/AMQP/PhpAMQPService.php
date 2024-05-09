@@ -10,13 +10,14 @@ use PhpAmqpLib\Message\AMQPMessage;
 class PhpAMQPService implements AMQPInterface
 {
     protected $connection = null;
+
     protected $channel = null;
 
     public function producer(string $queue, array $payload, string $exchange): void
     {
         $this->connect();
 
-		$this->channel->queue_declare($queue, false, true, false, false);
+        $this->channel->queue_declare($queue, false, true, false, false);
         $this->channel->exchange_declare($exchange, AMQPExchangeType::DIRECT, false, true, false);
         $this->channel->queue_bind($queue, $exchange);
 
@@ -27,7 +28,7 @@ class PhpAMQPService implements AMQPInterface
                 'content_type' => 'text/plain',
             ]
         );
-        
+
         $this->channel->basic_publish(
             msg: $message,
             exchange: $exchange
@@ -55,7 +56,7 @@ class PhpAMQPService implements AMQPInterface
                 'content_type' => 'text/plain',
             ]
         );
-        
+
         $this->channel->basic_publish(
             msg: $message,
             exchange: $exchange
@@ -64,19 +65,19 @@ class PhpAMQPService implements AMQPInterface
         $this->closeChannel();
         $this->closeConnection();
     }
-    
+
     public function consumer(string $queue, string $exchange, Closure $callback): void
     {
         $this->connect();
 
         $this->channel->queue_declare(
-            queue: $queue, 
-            durable: true, 
+            queue: $queue,
+            durable: true,
             auto_delete: false
         );
 
         $this->channel->queue_bind(
-            queue: $queue, 
+            queue: $queue,
             exchange: $exchange,
             routing_key: config('microservices.queue_name')
         );
@@ -114,12 +115,12 @@ class PhpAMQPService implements AMQPInterface
     }
 
     private function closeChannel()
-    { 
+    {
         $this->channel->close();
     }
 
     private function closeConnection()
-    { 
+    {
         $this->connection->close();
     }
 }

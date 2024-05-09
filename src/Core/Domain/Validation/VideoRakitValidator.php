@@ -7,13 +7,12 @@ use Rakit\Validation\Validator;
 
 class VideoRakitValidator implements ValidatiorInterface
 {
-
     public function validate(Entity $entity): void
     {
         $data = $this->convertEntityForArray($entity);
-        
+
         $validator = new Validator();
-        
+
         $validation = $validator->validate($data, [
             'title' => 'required|min:3|max:255',
             'description' => 'required|min:3|max:255',

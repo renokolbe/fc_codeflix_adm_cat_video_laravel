@@ -23,7 +23,7 @@ class ListCategoriesUseCase
             page: $input->page,
             totalPage: $input->totalPage
         );
- 
+
         return new ListCategoriesOutputDTO(
             items: $categories->items(),
             total: $categories->total(),
@@ -35,7 +35,7 @@ class ListCategoriesUseCase
             from: $categories->from()
         );
 
-        /* 
+        /*
         return new ListCategoriesOutputDTO(
             items: array_map(function ($data) {
                 return [
@@ -53,8 +53,7 @@ class ListCategoriesUseCase
             per_page: $categories->perPage(),
             to: $categories->to(),
             from: $categories->from()
-        ); 
+        );
         */
     }
-
 }

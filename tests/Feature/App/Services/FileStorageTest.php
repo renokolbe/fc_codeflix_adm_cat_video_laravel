@@ -3,8 +3,6 @@
 namespace Tests\Feature\App\Services;
 
 use App\Services\Storage\FileStorage;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -22,7 +20,7 @@ class FileStorageTest extends TestCase
             'name' => $fakeFile->getFileName(),
             'type' => $fakeFile->getMimeType(),
             'error' => $fakeFile->getError(),
-            'size' => $fakeFile->getSize()
+            'size' => $fakeFile->getSize(),
         ];
 
         //dump($file);
@@ -40,6 +38,7 @@ class FileStorageTest extends TestCase
         Storage::delete($filePath);
 
     }
+
     public function testDelete()
     {
         $fakeFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');

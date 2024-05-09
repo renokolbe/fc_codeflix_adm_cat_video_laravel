@@ -4,14 +4,11 @@ namespace Tests\Feature\App\Repositories\Eloquent;
 
 use App\Models\CastMember as Model;
 use App\Repositories\Eloquent\CastMemberEloquentRepository;
-use App\Repositories\Eloquent\CategoryEloquentRepository;
 use Core\Domain\Entity\CastMember as EntityCastMember;
 use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\Domain\ValueObject\Uuid;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CastMemberEloquentRepositoryTest extends TestCase
@@ -20,7 +17,7 @@ class CastMemberEloquentRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setUp(); 
+        parent::setUp();
         $this->repository = new CastMemberEloquentRepository(new Model());
     }
 
@@ -43,7 +40,7 @@ class CastMemberEloquentRepositoryTest extends TestCase
         $this->assertDatabaseHas('cast_members', [
             'id' => $response->id,
             'name' => 'Cast Member Name 1',
-            'type' => CastMemberType::ACTOR->value
+            'type' => CastMemberType::ACTOR->value,
         ]);
     }
 
@@ -95,6 +92,7 @@ class CastMemberEloquentRepositoryTest extends TestCase
         $this->assertCount(0, $response->items());
         $this->assertEquals(0, $response->total());
     }
+
     public function testTotalPage()
     {
         $castMembers = Model::factory()->count(100)->create();
@@ -133,10 +131,10 @@ class CastMemberEloquentRepositoryTest extends TestCase
         $this->assertDatabaseHas('cast_members', [
             'id' => $castMemberDB->id,
             'name' => 'Cast Member Name Updated',
-            'type' => $castMemberDB->type
+            'type' => $castMemberDB->type,
         ]);
         $this->assertNotEquals($castMemberDB->name, $response->name);
-        $this->assertEquals("Cast Member Name Updated", $response->name);
+        $this->assertEquals('Cast Member Name Updated', $response->name);
     }
 
     public function testDeleleNotFound()
@@ -151,8 +149,8 @@ class CastMemberEloquentRepositoryTest extends TestCase
         $response = $this->repository->delete($castMemberDB->id);
         $this->assertTrue($response);
         $this->assertSoftDeleted('cast_members', [
-            'id' => $castMemberDB->id
+            'id' => $castMemberDB->id,
         ]);
-        
+
     }
 }

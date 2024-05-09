@@ -37,49 +37,55 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
         if (! $category = $this->model->find($id)) {
             throw new NotFoundException('Category Not Found');
         }
+
         return $this->toCategory($category);
     }
 
     public function getIdsListIds(array $categoriesId = []): array
     {
         return $this->model
-                    ->whereIn('id', $categoriesId)
-                    ->pluck('id')
-                    ->toArray();
+            ->whereIn('id', $categoriesId)
+            ->pluck('id')
+            ->toArray();
     }
+
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
         $categories = $this->model
-                            ->where(function ($query) use ($filter) {
-                                if ($filter)
-                                    $query->where('name', 'LIKE', "%{$filter}%");
-                            })
-                            ->orderBy('id', $order)
-                            ->get();
-                            
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('name', 'LIKE', "%{$filter}%");
+                }
+            })
+            ->orderBy('id', $order)
+            ->get();
+
         return $categories->toArray();
     }
+
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
     {
         // $query = $this->model;
-        
+
         // if ($filter){
         //     $query->where('name', 'LIKE', "%{$filter}%");
         // }
 
         // $query->orderBy('id', $order);
         // $paginator =$query->paginate();
-        
-        $paginator =$this->model
-        ->where(function ($query) use ($filter) {
-            if ($filter)
-                $query->where('name', 'LIKE', "%{$filter}%");
+
+        $paginator = $this->model
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('name', 'LIKE', "%{$filter}%");
+                }
             })
-        ->orderBy('id', $order)
-        ->paginate();
+            ->orderBy('id', $order)
+            ->paginate();
 
         return new PaginationPresenter($paginator);
     }
+
     public function update(Entity $category): Entity
     {
         if (! $categoryDb = $this->model->find($category->id())) {
@@ -96,6 +102,7 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
 
         return $this->toCategory($categoryDb);
     }
+
     public function delete(string $id): bool
     {
         if (! $categoryDb = $this->model->find($id)) {

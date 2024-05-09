@@ -10,11 +10,10 @@ use Core\UseCase\Video\ChangeEncoded\DTO\ChangeEncodedVideoOutputDTO;
 
 class ChangeEncodedPathVideo
 {
-
     public function __construct(
         protected VideoRepositoryInterface $repository
-    )
-    {}
+    ) {
+    }
 
     public function exec(ChangeEncodedVideoInputDTO $input): ChangeEncodedVideoOutputDTO
     {

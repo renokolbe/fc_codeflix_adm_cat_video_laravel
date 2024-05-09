@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Validator;
 
 class VideoLaravelValidator implements ValidatiorInterface
 {
-
     public function validate(Entity $entity): void
     {
         $data = $this->convertEntityForArray($entity);

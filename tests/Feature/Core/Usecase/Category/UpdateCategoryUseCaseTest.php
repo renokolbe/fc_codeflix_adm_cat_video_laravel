@@ -33,8 +33,8 @@ class UpdateCategoryUseCaseTest extends TestCase
         $this->assertDatabaseHas('categories', [
             'name' => 'New Category Name',
             'description' => $categoryDB->description,
-            'is_active' => $categoryDB->is_active
+            'is_active' => $categoryDB->is_active,
         ]);
-        
+
     }
 }

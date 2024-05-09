@@ -6,25 +6,21 @@ use Core\Domain\Entity\Video as EntityVideo;
 use Core\Domain\Enum\Rating;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Uuid;
+use Core\UseCase\Video\List\DTO\ListInputVideoDTO;
+use Core\UseCase\Video\List\DTO\ListOutputVideoDTO;
 use Core\UseCase\Video\List\ListVideoUseCase;
-use Core\UseCase\Video\List\DTO\{
-    ListInputVideoDTO,
-    ListOutputVideoDTO
-};
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid as RamseyUuid;
 use stdClass;
 
 class ListVideoUseCaseUnitTest extends TestCase
 {
-
     public function testGetById()
     {
         $uuid = Uuid::random();
 
         $entity = $this->createEntity($uuid);
-        
+
         $useCase = new ListVideoUseCase($this->mockRepository($entity));
         $responseUseCase = $useCase->execute($this->mockInputDTO($uuid));
 
@@ -44,7 +40,7 @@ class ListVideoUseCaseUnitTest extends TestCase
     private function mockInputDTO(string $id)
     {
 
-        return Mockery::mock(ListInputVideoDTO::class, [$id] );
+        return Mockery::mock(ListInputVideoDTO::class, [$id]);
     }
 
     private function mockRepository(object $entity)
@@ -52,12 +48,13 @@ class ListVideoUseCaseUnitTest extends TestCase
         $mockRepository = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
 
         $mockRepository->shouldReceive('findById')
-                        ->with($entity->id())
-                        ->times(1)
-                        ->andReturn($entity);
-        
+            ->with($entity->id())
+            ->times(1)
+            ->andReturn($entity);
+
         return $mockRepository;
     }
+
     private function createEntity(string $id): EntityVideo
     {
 
@@ -78,5 +75,4 @@ class ListVideoUseCaseUnitTest extends TestCase
         Mockery::close();
         parent::tearDown();
     }
-
 }

@@ -46,15 +46,18 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         // Interceptar as excecções personalizadas
-        
-        if ($exception instanceof NotFoundException)
+
+        if ($exception instanceof NotFoundException) {
             return $this->showError($exception->getMessage(), Response::HTTP_NOT_FOUND);
+        }
 
-        if ($exception instanceof EntityValidationException)
+        if ($exception instanceof EntityValidationException) {
             return $this->showError($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
-        if ($exception instanceof NotificationException)
+        if ($exception instanceof NotificationException) {
             return $this->showError($exception->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         //dd('Handler->render ' . $exception);
         return parent::render($request, $exception);

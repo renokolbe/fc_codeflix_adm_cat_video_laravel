@@ -5,28 +5,22 @@ namespace App\Providers;
 use App\Events\{
     VideoEvent
 };
-use App\Repositories\Eloquent\{
-    CastMemberEloquentRepository,
-    CategoryEloquentRepository,
-    GenreEloquentRepository,
-    VideoEloquentRepository
-};
+use App\Repositories\Eloquent\CastMemberEloquentRepository;
+use App\Repositories\Eloquent\CategoryEloquentRepository;
+use App\Repositories\Eloquent\GenreEloquentRepository;
+use App\Repositories\Eloquent\VideoEloquentRepository;
 use App\Repositories\Transaction\DBTransaction;
+use App\Services\AMQP\AMQPInterface;
+use App\Services\AMQP\PhpAMQPService;
 use App\Services\{
     Storage\FileStorage
 };
-use App\Services\AMQP\AMQPInterface;
-use App\Services\AMQP\PhpAMQPService;
-use Core\Domain\Repository\{
-    CastMemberRepositoryInterface,
-    CategoryRepositoryInterface,
-    GenreRepositoryInterface,
-    VideoRepositoryInterface
-};
-use Core\UseCase\Interfaces\{
-    FileStorageInterface,
-    TransactionInterface
-};
+use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\GenreRepositoryInterface;
+use Core\Domain\Repository\VideoRepositoryInterface;
+use Core\UseCase\Interfaces\FileStorageInterface;
+use Core\UseCase\Interfaces\TransactionInterface;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,7 +36,7 @@ class CleanArchServiceProvider extends ServiceProvider
         // Informa para o PHP/Laravel qual a relação entre a Interface de Intfraestrutura e o Repositorio Definitivo
 
         $this->bindRepositories();
-        
+
         $this->app->singleton(
             FileStorageInterface::class,
             FileStorage::class
@@ -56,16 +50,14 @@ class CleanArchServiceProvider extends ServiceProvider
         /**
          * DB Transaction
          */
-
-         $this->app->bind(
-            TransactionInterface::class, 
+        $this->app->bind(
+            TransactionInterface::class,
             DBTransaction::class
         );
 
         /**
          * Services
          */
-
         $this->app->bind(
             AMQPInterface::class,
             PhpAMQPService::class
@@ -82,14 +74,10 @@ class CleanArchServiceProvider extends ServiceProvider
         //
     }
 
-    /**
-     * 
-     */
-
-     private function bindRepositories()
-     {
+    private function bindRepositories()
+    {
         $this->app->singleton(
-            CategoryRepositoryInterface::class, 
+            CategoryRepositoryInterface::class,
             CategoryEloquentRepository::class
         );
 
@@ -108,5 +96,5 @@ class CleanArchServiceProvider extends ServiceProvider
             VideoEloquentRepository::class
         );
 
-     }
+    }
 }

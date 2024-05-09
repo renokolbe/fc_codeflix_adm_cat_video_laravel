@@ -1,10 +1,10 @@
 <?php
 
 namespace Tests\Traits;
+
 /**
  * Trait para Desabilitar, em testes os Middleares de Autenticação e Autorização
  */
-
 trait WithoutMiddlewareTrait
 {
     protected function setUp(): void
@@ -17,5 +17,4 @@ trait WithoutMiddlewareTrait
             \Illuminate\Auth\Middleware\Authorize::class,
         ]);
     }
-
 }

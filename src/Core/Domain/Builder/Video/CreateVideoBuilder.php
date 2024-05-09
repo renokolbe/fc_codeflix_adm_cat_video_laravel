@@ -84,7 +84,7 @@ class CreateVideoBuilder implements Builder
 
         return $this;
     }
-    
+
     public function addHalfThumb(string $path): Builder
     {
         //dump($path);
@@ -99,10 +99,9 @@ class CreateVideoBuilder implements Builder
 
         return $this;
     }
-    
+
     public function getEntity(): Video
     {
         return $this->entity;
     }
-
 }

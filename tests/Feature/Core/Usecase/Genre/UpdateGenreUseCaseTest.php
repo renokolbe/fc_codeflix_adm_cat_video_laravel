@@ -4,10 +4,8 @@ namespace Tests\Feature\Core\Usecase\Genre;
 
 use App\Models\Category as ModelCategory;
 use App\Models\Genre as ModelGenre;
-use App\Repositories\Eloquent\{
-    CategoryEloquentRepository,
-    GenreEloquentRepository
-};
+use App\Repositories\Eloquent\CategoryEloquentRepository;
+use App\Repositories\Eloquent\GenreEloquentRepository;
 use App\Repositories\Transaction\DBTransaction;
 use Core\Domain\Exception\NotFoundException;
 use Core\DTO\Genre\UpdateGenre\GenreUpdateInputDTO;
@@ -40,7 +38,7 @@ class UpdateGenreUseCaseTest extends TestCase
         );
 
         $this->assertDatabaseHas('genres', [
-            'name' => 'test updated'
+            'name' => 'test updated',
         ]);
 
         $this->assertDatabaseCount('category_genre', 5);
@@ -98,8 +96,8 @@ class UpdateGenreUseCaseTest extends TestCase
                     categoriesId: $categoriesIds
                 )
             );
-                $this->assertDatabaseHas('genres', [
-                'name' => 'test updated'
+            $this->assertDatabaseHas('genres', [
+                'name' => 'test updated',
             ]);
             $this->assertDatabaseCount('category_genre', 5);
         } catch (\Throwable $th) {
@@ -133,8 +131,8 @@ class UpdateGenreUseCaseTest extends TestCase
                     categoriesId: $categoriesIds
                 )
             );
-                $this->assertDatabaseHas('genres', [
-                'name' => 'test updated'
+            $this->assertDatabaseHas('genres', [
+                'name' => 'test updated',
             ]);
             $this->assertDatabaseCount('category_genre', 5);
         } catch (\Throwable $th) {
@@ -143,5 +141,5 @@ class UpdateGenreUseCaseTest extends TestCase
             $this->assertDatabaseCount('category_genre', 0);
         }
 
-    }    
+    }
 }

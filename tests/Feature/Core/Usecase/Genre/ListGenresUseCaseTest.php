@@ -2,12 +2,10 @@
 
 namespace Tests\Feature\Core\Usecase\Genre;
 
-use App\Repositories\Eloquent\GenreEloquentRepository;
 use App\Models\Genre as ModelGenre;
-use Core\DTO\Genre\List\{
-    ListGenresInputDTO,
-    ListGenresOutputDTO
-};
+use App\Repositories\Eloquent\GenreEloquentRepository;
+use Core\DTO\Genre\List\ListGenresInputDTO;
+use Core\DTO\Genre\List\ListGenresOutputDTO;
 use Core\UseCase\Genre\ListGenresUseCase;
 use Tests\TestCase;
 
@@ -27,6 +25,7 @@ class ListGenresUseCaseTest extends TestCase
         $this->assertCount(0, $responseUseCase->items);
 
     }
+
     public function testListGenres_All()
     {
         $repository = new GenreEloquentRepository(new ModelGenre());
@@ -42,6 +41,6 @@ class ListGenresUseCaseTest extends TestCase
         $this->assertInstanceOf(ListGenresOutputDTO::class, $responseUseCase);
         $this->assertCount(15, $responseUseCase->items);
         $this->assertEquals(count($genreDB), $responseUseCase->total);
-        
+
     }
 }

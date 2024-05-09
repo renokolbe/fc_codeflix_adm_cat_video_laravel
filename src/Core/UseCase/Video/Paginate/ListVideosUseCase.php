@@ -4,18 +4,15 @@ namespace Core\UseCase\Video\Paginate;
 
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\Paginate\DTO\{
-    PaginateInputVideoDTO,
-    PaginateOutputVideoDTO
-};
+use Core\UseCase\Video\Paginate\DTO\PaginateInputVideoDTO;
+use Core\UseCase\Video\Paginate\DTO\PaginateOutputVideoDTO;
 
 class ListVideosUseCase
 {
-
     public function __construct(
         private VideoRepositoryInterface $videoRepository
-    )
-    {}
+    ) {
+    }
 
     public function execute(PaginateInputVideoDTO $input): PaginationInterface
     {

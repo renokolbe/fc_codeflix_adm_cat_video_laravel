@@ -5,17 +5,14 @@ namespace Tests\Unit\UseCase\Video;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Uuid;
 use Core\UseCase\Video\Delete\DeleteVideoUseCase;
-use Core\UseCase\Video\Delete\DTO\{
-    DeleteInputVideoDTO,
-    DeleteOutputVideoDTO
-};
+use Core\UseCase\Video\Delete\DTO\DeleteInputVideoDTO;
+use Core\UseCase\Video\Delete\DTO\DeleteOutputVideoDTO;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 class DeleteVideoUseCaseUnitTest extends TestCase
 {
-
     public function testNotFound()
     {
         $useCase = new DeleteVideoUseCase($this->mockRepository('uuid_fake', false));
@@ -28,6 +25,7 @@ class DeleteVideoUseCaseUnitTest extends TestCase
         $this->tearDown();
 
     }
+
     public function testDelete()
     {
         $uuid = Uuid::random();
@@ -44,7 +42,7 @@ class DeleteVideoUseCaseUnitTest extends TestCase
     private function mockInputDTO(string $id)
     {
 
-        return Mockery::mock(DeleteInputVideoDTO::class, [$id] );
+        return Mockery::mock(DeleteInputVideoDTO::class, [$id]);
     }
 
     private function mockRepository(string $id, bool $deleted = true)
@@ -52,10 +50,10 @@ class DeleteVideoUseCaseUnitTest extends TestCase
         $mockRepository = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
 
         $mockRepository->shouldReceive('delete')
-                        ->with($id)
-                        ->times(1)
-                        ->andReturn($deleted);
-        
+            ->with($id)
+            ->times(1)
+            ->andReturn($deleted);
+
         return $mockRepository;
     }
 
@@ -64,5 +62,4 @@ class DeleteVideoUseCaseUnitTest extends TestCase
         Mockery::close();
         parent::tearDown();
     }
-
 }

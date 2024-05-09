@@ -2,12 +2,10 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\{
-    Category as CategoryModel,
-    Video as VideoModel,
-    Genre as GenreModel,
-    CastMember as CastMemberModel
-};
+use App\Models\CastMember as CastMemberModel;
+use App\Models\Category as CategoryModel;
+use App\Models\Genre as GenreModel;
+use App\Models\Video as VideoModel;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +15,7 @@ use Tests\Traits\WithoutMiddlewareTrait;
 class VideoApiTest extends TestCase
 {
     use WithoutMiddlewareTrait;
-    
+
     protected $endpoint = '/api/videos';
 
     protected $serializedFields = [
@@ -48,7 +46,7 @@ class VideoApiTest extends TestCase
     public function testPaginate()
     {
         VideoModel::factory()->count(20)->create();
-        
+
         $response = $this->getJson($this->endpoint);
 
         //$response->dump();
@@ -61,7 +59,7 @@ class VideoApiTest extends TestCase
         $response->assertJsonPath('meta.per_page', 15);
         $response->assertJsonStructure([
             'data' => [
-                '*' => $this->serializedFields
+                '*' => $this->serializedFields,
             ],
             'meta' => [
                 'total',
@@ -71,39 +69,39 @@ class VideoApiTest extends TestCase
                 'to',
                 'from',
                 'per_page',
-            ]
+            ],
         ]);
     }
 
     /**
      * @test
+     *
      * @dataProvider dataProviderPagination
      */
-     public function paginateWithDataProvider(
+    public function paginateWithDataProvider(
         int $total,
         int $totalCurrentPage,
         int $page = 1,
         int $totalPerPage = 15,
         string $filter = '',
-     )
-     {
+    ) {
         VideoModel::factory()->count($total)->create();
 
         if ($filter) {
             VideoModel::factory()->count($total)->create([
-                'title' => $filter
+                'title' => $filter,
             ]);
         }
 
         $params = http_build_query([
-             'page' => $page,
-             'totalPage' => $totalPerPage,
-             'order' => 'DESC',
-             'filter' => $filter,
+            'page' => $page,
+            'totalPage' => $totalPerPage,
+            'order' => 'DESC',
+            'filter' => $filter,
         ]);
 
         $response = $this->getJson("$this->endpoint?$params");
-        
+
         $response->assertOK();  // Equivalente a $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonPath('meta.total', $total);
         $response->assertJsonCount($totalCurrentPage, 'data');
@@ -111,7 +109,7 @@ class VideoApiTest extends TestCase
         $response->assertJsonPath('meta.per_page', $totalPerPage);
         $response->assertJsonStructure([
             'data' => [
-                '*' => $this->serializedFields
+                '*' => $this->serializedFields,
             ],
             'meta' => [
                 'total',
@@ -121,61 +119,60 @@ class VideoApiTest extends TestCase
                 'to',
                 'from',
                 'per_page',
-            ]
+            ],
         ]);
-     }
+    }
 
-     protected function dataProviderPagination(): array
-     {
+    protected function dataProviderPagination(): array
+    {
         return [
-             'test empty' => [
-                 'total' => 0,
-                 'totalCurrentPage' => 0,
-                 'page' => 1,
-                 'totalPerPage' => 15,
-             ],
-             'test with total two pages' => [
-                 'total' => 20,
-                 'totalCurrentPage' => 15,
-                 'page' => 1,
-                 'totalPerPage' => 15,
-             ],
+            'test empty' => [
+                'total' => 0,
+                'totalCurrentPage' => 0,
+                'page' => 1,
+                'totalPerPage' => 15,
+            ],
+            'test with total two pages' => [
+                'total' => 20,
+                'totalCurrentPage' => 15,
+                'page' => 1,
+                'totalPerPage' => 15,
+            ],
             'test page two' => [
                 'total' => 20,
                 'totalCurrentPage' => 5,
                 'page' => 2,
                 'totalPerPage' => 15,
             ],
-             'test page four' => [
-                 'total' => 40,
-                 'totalCurrentPage' => 10,
-                 'page' => 4,
-                 'totalPerPage' => 10,
+            'test page four' => [
+                'total' => 40,
+                'totalCurrentPage' => 10,
+                'page' => 4,
+                'totalPerPage' => 10,
             ],
-             'test with filter' => [
-                 'total' => 15,
-                 'totalCurrentPage' => 5,
-                 'page' => 2,
-                 'totalPerPage' => 10,
-                 'filter' => 'test',
+            'test with filter' => [
+                'total' => 15,
+                'totalCurrentPage' => 5,
+                'page' => 2,
+                'totalPerPage' => 10,
+                'filter' => 'test',
             ],
         ];
-     }
+    }
 
-     /**
-      * @test
-      */
-
-     public function ShowNotFound()
+    /**
+     * @test
+     */
+    public function ShowNotFound()
     {
         $response = $this->getJson("$this->endpoint/0");
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
-     /**
-      * @test
-      */
-     public function testShow()
+    /**
+     * @test
+     */
+    public function testShow()
     {
         $videoModel = VideoModel::factory()->create();
         $response = $this->getJson("$this->endpoint/$videoModel->id");
@@ -184,8 +181,8 @@ class VideoApiTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
-             'data' => $this->serializedFields
-         ]);
+            'data' => $this->serializedFields,
+        ]);
         $this->assertEquals($videoModel->id, $response->json('data.id'));
         $this->assertEquals($videoModel->title, $response->json('data.title'));
         $this->assertEquals($videoModel->description, $response->json('data.description'));
@@ -196,10 +193,10 @@ class VideoApiTest extends TestCase
         //$response->assertJson($model->toArray());
     }
 
-     /**
-      * @test
-      */
-     public function store()
+    /**
+     * @test
+     */
+    public function store()
     {
         $videoFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');
         $videoTrailer = UploadedFile::fake()->create('trailer.mp4', 1, 'video/mp4');
@@ -225,7 +222,7 @@ class VideoApiTest extends TestCase
             'trailer_file' => $videoTrailer,
             'banner_file' => $imageBannerFile,
             'thumb_file' => $imagethumbFile,
-            'thumb_half_file' => $imageThumbHalfFile
+            'thumb_half_file' => $imageThumbHalfFile,
         ];
 
         $response = $this->postJson($this->endpoint, $data);
@@ -234,7 +231,7 @@ class VideoApiTest extends TestCase
 
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonStructure([
-            'data' => $this->serializedFields
+            'data' => $this->serializedFields,
         ]);
 
         $this->assertEquals($data['title'], $response->json('data.title'));
@@ -247,9 +244,9 @@ class VideoApiTest extends TestCase
         $this->assertEquals($categoriesIds, $response->json('data.categories'));
         $this->assertEquals($genresIds, $response->json('data.genres'));
         $this->assertEquals($castMembersIds, $response->json('data.cast_members'));
-        
+
         $this->assertDatabaseCount('videos', 1);
-        
+
         $this->assertDatabaseHas('videos', [
             'id' => $response->json('data.id'),
             'title' => $data['title'],
@@ -257,7 +254,7 @@ class VideoApiTest extends TestCase
             'year_launched' => $data['year_launched'],
             'rating' => $data['rating'],
             'duration' => $data['duration'],
-            'opened' => $data['opened']
+            'opened' => $data['opened'],
         ]);
 
         //Storage::assertExists($response->json('data.video'));
@@ -279,21 +276,21 @@ class VideoApiTest extends TestCase
         $response->assertUnprocessable(); // Equivalente //$response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $response->assertJsonValidationErrors([
-            'title', 
-            'description', 
-            'year_launched', 
-            'rating', 
-            'duration', 
+            'title',
+            'description',
+            'year_launched',
+            'rating',
+            'duration',
             'opened',
-            'categories', 
-            'genres', 
-            'cast_members'
+            'categories',
+            'genres',
+            'cast_members',
         ]);
     }
 
     /**
      * @test
-    */
+     */
     public function update()
     {
         $videoDb = VideoModel::factory()->create();
@@ -318,7 +315,7 @@ class VideoApiTest extends TestCase
             'trailer_file' => $videoTrailer,
             'banner_file' => $imageBannerFile,
             'thumb_file' => $imagethumbFile,
-            'thumb_half_file' => $imageThumbHalfFile
+            'thumb_half_file' => $imageThumbHalfFile,
         ];
 
         $response = $this->putJson("{$this->endpoint}/{$videoDb->id}", $data);
@@ -327,7 +324,7 @@ class VideoApiTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
-            'data' => $this->serializedFields
+            'data' => $this->serializedFields,
         ]);
 
         $this->assertEquals($data['title'], $response->json('data.title'));
@@ -341,9 +338,9 @@ class VideoApiTest extends TestCase
         $this->assertEquals($categoriesIds, $response->json('data.categories'));
         $this->assertEquals($genresIds, $response->json('data.genres'));
         $this->assertEquals($castMembersIds, $response->json('data.cast_members'));
-        
+
         $this->assertDatabaseCount('videos', 1);
-        
+
         $this->assertDatabaseHas('videos', [
             'id' => $response->json('data.id'),
             'title' => $data['title'],
@@ -351,7 +348,7 @@ class VideoApiTest extends TestCase
             'year_launched' => $videoDb->year_launched,
             'rating' => $videoDb->rating->value,
             'duration' => $videoDb->duration,
-            'opened' => $videoDb->opened
+            'opened' => $videoDb->opened,
         ]);
 
         //Storage::assertExists($response->json('data.video'));
@@ -365,7 +362,7 @@ class VideoApiTest extends TestCase
 
     /**
      * @test
-    */
+     */
     public function updateNotFound()
     {
         $videoFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');
@@ -388,7 +385,7 @@ class VideoApiTest extends TestCase
             'trailer_file' => $videoTrailer,
             'banner_file' => $imageBannerFile,
             'thumb_file' => $imagethumbFile,
-            'thumb_half_file' => $imageThumbHalfFile
+            'thumb_half_file' => $imageThumbHalfFile,
         ];
 
         $response = $this->putJson("{$this->endpoint}/{fake_id}", $data);
@@ -405,7 +402,6 @@ class VideoApiTest extends TestCase
     {
         $videoDb = VideoModel::factory()->create();
 
-
         $data = [];
 
         $response = $this->putJson("{$this->endpoint}/{$videoDb->id}", $data);
@@ -415,11 +411,11 @@ class VideoApiTest extends TestCase
         $response->assertUnprocessable(); // Equivalente //$response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $response->assertJsonValidationErrors([
-            'title', 
-            'description', 
-            'categories', 
-            'genres', 
-            'cast_members'
+            'title',
+            'description',
+            'categories',
+            'genres',
+            'cast_members',
         ]);
 
     }

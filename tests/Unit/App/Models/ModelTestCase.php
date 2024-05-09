@@ -8,10 +8,13 @@ use PHPUnit\Framework\TestCase;
 abstract class ModelTestCase extends TestCase
 {
     abstract protected function model(): Model;
+
     abstract protected function traits(): array;
+
     abstract protected function fillables(): array;
+
     abstract protected function casts(): array;
-    
+
     public function testIfUseTraits()
     {
         $traitsNeeded = $this->traits();
@@ -21,7 +24,8 @@ abstract class ModelTestCase extends TestCase
         $this->assertEquals($traitsNeeded, $traitsUsed);
     }
 
-    public function testFillables(){
+    public function testFillables()
+    {
 
         $fillablesNeeded = $this->fillables();
 
@@ -30,12 +34,14 @@ abstract class ModelTestCase extends TestCase
         $this->assertEquals($fillablesNeeded, $fillablesUsed);
     }
 
-    public function testIncrementingIsFalse(){
+    public function testIncrementingIsFalse()
+    {
         $model = $this->model();
         $this->assertFalse($model->incrementing);
     }
 
-    public function testHasCasts(){
+    public function testHasCasts()
+    {
 
         $castNeeded = $this->casts();
 
@@ -43,5 +49,4 @@ abstract class ModelTestCase extends TestCase
 
         $this->assertEquals($castNeeded, $castUsed);
     }
-
 }
