@@ -1,0 +1,169 @@
+<?php
+
+namespace Tests\Feature\Core\Usecase\Video;
+
+use App\Models\{
+    CastMember,
+    Category,
+    Genre
+};
+use Core\Domain\Enum\Rating;
+use Core\Domain\Repository\{
+    CastMemberRepositoryInterface, 
+    CategoryRepositoryInterface,
+    GenreRepositoryInterface, 
+    VideoRepositoryInterface
+};
+use Core\UseCase\Interfaces\{
+    TransactionInterface
+};
+use Core\UseCase\Video\Create\CreateVideoUseCase;
+use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
+use Illuminate\Http\UploadedFile;
+use Tests\Stubs\{
+    UploadFileStub,
+    VideoEventStub
+};
+use Tests\TestCase;
+
+class CreateVideoUseCaseTest extends TestCase
+{
+    /**
+     * Teste de criação de um Vídeo
+     * @dataProvider provider
+     */
+    public function testCreate(
+        int $categoriesCount,
+        int $genresCount,
+        int $castMembersCount,
+        bool $withMediaVideo = false,
+        bool $withTrailer = false,
+        bool $withBanner = false,
+        bool $withThumb = false,
+        bool $withThumbHalf = false
+    )
+    {
+        $useCase = new CreateVideoUseCase(
+            $this->app->make(VideoRepositoryInterface::class),
+            $this->app->make(TransactionInterface::class),
+            //$this->app->make(FileStorageInterface::class),
+            new UploadFileStub(),
+            //$this->app->make(VideoEventManagerInterface::class),
+            new VideoEventStub(),
+            $this->app->make(CategoryRepositoryInterface::class),
+            $this->app->make(GenreRepositoryInterface::class),
+            $this->app->make(CastMemberRepositoryInterface::class)
+        );
+
+        $categoriesIds = Category::factory()->count($categoriesCount)->create()->pluck('id')->toArray();
+        $genresIds = Genre::factory()->count($genresCount)->create()->pluck('id')->toArray();
+        $castMembersIds = CastMember::factory()->count($castMembersCount)->create()->pluck('id')->toArray();
+
+        $fakeMedia = UploadedFile::fake()->create('videos\video.mp4', 1024, 'video/mp4');
+        $media = [
+            'tmp_name' => $fakeMedia->getPathname(),
+            'name' => $fakeMedia->getClientOriginalName(),
+            'type' => $fakeMedia->getMimeType(),
+            'error' => $fakeMedia->getError(),
+        ];
+
+        $input = new CreateInputVideoDTO(
+            title: 'New Title',
+            description: 'New Description',
+            yearLaunched: 2021,
+            opened: true,
+            rating: Rating::L,
+            duration: 120,
+            categories: $categoriesIds,
+            genres: $genresIds,
+            castMembers: $castMembersIds,
+            videoFile: $withMediaVideo ? $media : null,
+            trailerFile: $withTrailer ? $media : null,
+            bannerFile: $withBanner ? $media : null,
+            thumbFile: $withThumb ? $media : null,
+            thumbHalf: $withThumbHalf ? $media : null
+        );
+
+        $response = $useCase->exec($input);
+
+        $this->assertNotNull($response->id);
+        $this->assertEquals($input->title, $response->title);
+        $this->assertEquals($input->description, $response->description);
+        $this->assertEquals($input->yearLaunched, $response->yearLaunched);
+        $this->assertEquals($input->opened, $response->opened);
+        $this->assertEquals($input->rating, $response->rating);
+        $this->assertEquals($input->duration, $response->duration);
+
+        $this->assertCount(count($input->categories), $response->categories);
+        $this->assertEqualsCanonicalizing($input->categories, $response->categories);
+        $this->assertCount(count($input->genres), $response->genres);
+        $this->assertEqualsCanonicalizing($input->genres, $response->genres);
+        $this->assertCount(count($input->castMembers), $response->castMembers);
+        $this->assertEqualsCanonicalizing($input->castMembers, $response->castMembers);
+
+        $this->assertTrue($withMediaVideo ? $response->videoFile !== null : $response->videoFile === null);
+        $this->assertTrue($withTrailer ? $response->trailerFile !== null : $response->trailerFile === null);
+        $this->assertTrue($withBanner ? $response->bannerFile !== null : $response->bannerFile === null);
+        $this->assertTrue($withThumb ? $response->thumbFile !== null : $response->thumbFile === null);
+        $this->assertTrue($withThumbHalf ? $response->thumbHalf !== null : $response->thumbHalf === null);
+
+    }
+
+    protected function provider(): array
+    {
+        return [
+            'Test without any IDs' => [
+                'categoriesCount' => 0,
+                'genresCount' => 0,
+                'castMembersCount' => 0,
+            ],
+            'Test with all IDs' => [
+                'categoriesCount' => 1,
+                'genresCount' => 1,
+                'castMembersCount' => 1
+            ],
+            'Test without categories' => [
+                'categoriesCount' => 0,
+                'genresCount' => 1,
+                'castMembersCount' => 1
+            ],
+            'Test without categories and genres' => [
+                'categoriesCount' => 0,
+                'genresCount' => 0,
+                'castMembersCount' => 1
+            ],
+            'Test without categories and castMembers' => [
+                'categoriesCount' => 0,
+                'genresCount' => 1,
+                'castMembersCount' => 0
+            ],
+            'Test with all IDs and Media and Trailer' => [
+                'categoriesCount' => 1,
+                'genresCount' => 1,
+                'castMembersCount' => 1,
+                'withMediaVideo' => true,
+                'withTrailer' => true
+            ],
+            'Test with all IDs and Only Images' => [
+                'categoriesCount' => 1,
+                'genresCount' => 1,
+                'castMembersCount' => 1,
+                'withMediaVideo' => false,
+                'withTrailer' => false,
+                'withBanner' => true,
+                'withThumb' => true,
+                'withThumbHalf' => true
+            ],
+            'Test with all IDs and Medias andImages' => [
+                'categoriesCount' => 1,
+                'genresCount' => 1,
+                'castMembersCount' => 1,
+                'withMediaVideo' => true,
+                'withTrailer' => true,
+                'withBanner' => true,
+                'withThumb' => true,
+                'withThumbHalf' => true
+            ],
+        ];
+    }
+}

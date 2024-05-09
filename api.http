@@ -1,0 +1,2 @@
+### Teste de Conexao
+GET  http://localhost:8000/api/categories
