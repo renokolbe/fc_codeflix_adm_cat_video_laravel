@@ -19,4 +19,4 @@ yarn-error.log
 /.vscode-server
 fc-codeflix-421514-78590bb4cd55.json
 /storage/cloud
-/.codeium
+/.codeium/*
