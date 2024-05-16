@@ -145,6 +145,9 @@ composer require laravel/pint --dev
 Exemplo - Geração de Dados
 \App\Models\Genre::factory()->count(100)->create();
 
+
+### IP Interno do Docker #### 172.17.0.1
+
 #### ATENCAO ## TESTES VIA POSTMAN ## Deve-se executar o Conatiner fora do VSCode
 
 ### Integração Micro Serviço Encoded ####
@@ -156,3 +159,6 @@ Exemplo - Geração de Dados
 - No RabbitMq - http://localhost:15672 (rabbitmq / rabbitmq)
     a) criar Exchange dlx
     b) Fazer o bind da queue Video com o Exchange dlx
+	
+### Teste de Conexão UDP ### containers de ElastickSearch
+echo "teste do prompt" | nc -u -w0 127.0.0.1 4718

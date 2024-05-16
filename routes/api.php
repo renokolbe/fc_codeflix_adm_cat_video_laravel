@@ -4,7 +4,14 @@ use App\Http\Controllers\Api\CastMemberController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\VideoController;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+
+// Teste de Log
+Route::get('test', function (){
+    Log::warning('test');
+	return 'ok';
+});
 
 // Autenticação e Autorização
 Route::middleware(['auth:api', 'can:admin-catalog'])->group(function () {
