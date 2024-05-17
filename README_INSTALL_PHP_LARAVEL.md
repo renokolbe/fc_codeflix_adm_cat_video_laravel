@@ -162,3 +162,5 @@ Exemplo - Geração de Dados
 	
 ### Teste de Conexão UDP ### containers de ElastickSearch
 echo "teste do prompt" | nc -u -w0 127.0.0.1 4718
+
+## Processos de CI/CD
