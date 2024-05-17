@@ -8,7 +8,7 @@ on:
       # "deployer",
       # "hotfix/**",
       # "release/**",
-      "deployment_with_octane"
+      "deployemnt_with_octane"
     ]
 
 env:
