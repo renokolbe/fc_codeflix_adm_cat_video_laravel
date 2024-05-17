@@ -2,4 +2,4 @@
 	email = rkolbe@vsb.net.br
 	name = Renato Kolbe
 [credential]
-	helper = "!f() { /var/www/.vscode-server/bin/dc96b837cf6bb4af9cd736aa3af08cf8279f7685/node /tmp/vscode-remote-containers-e6965264-50a3-422a-a54d-8ce87dc27c85.js git-credential-helper $*; }; f"
+	helper = "!f() { /var/www/.vscode-server/bin/dc96b837cf6bb4af9cd736aa3af08cf8279f7685/node /tmp/vscode-remote-containers-cd0be410-acc9-4eca-b1d1-c51cc5bb732f.js git-credential-helper $*; }; f"

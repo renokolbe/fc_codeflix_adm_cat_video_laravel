@@ -5,8 +5,8 @@ services:
     app:
         ##build: .
         ##container_name: microservice-videos-app
-        image: renokolbe/fc_codeflix_adm_cat_video_laravel:latest
-        env:
+        image: renokolbe/fc_codeflix_adm_cat_video_laravel:deployemnt_with_octane-2
+        env_file:
             - .env
         ##volumes:
         ##    - .:/var/www
