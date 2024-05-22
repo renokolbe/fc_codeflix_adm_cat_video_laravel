@@ -14,11 +14,12 @@ class Category extends Entity
     //use MethodsMagicTrait; // Nao eh mais necessario pois esta classe agora extende a Entity que jah contem os metodos
 
     public function __construct(
+        protected string $campoNovo,
         protected Uuid|string $id = '',
         protected string $name = '',
         protected string $description = '',
         protected bool $isActive = true,
-        protected DateTime|string $createdAt = ''
+        protected DateTime|string $createdAt = '',
     ) {
         $this->id = $this->id ? new Uuid($this->id) : Uuid::random();
         $this->createdAt = $this->createdAt ? new DateTime($this->createdAt) : new DateTime();
