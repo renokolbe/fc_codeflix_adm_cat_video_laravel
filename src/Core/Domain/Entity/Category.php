@@ -14,7 +14,6 @@ class Category extends Entity
     //use MethodsMagicTrait; // Nao eh mais necessario pois esta classe agora extende a Entity que jah contem os metodos
 
     public function __construct(
-        protected string $campoNovo,
         protected Uuid|string $id = '',
         protected string $name = '',
         protected string $description = '',
